@@ -1,0 +1,110 @@
+[Map]
+
+[Continents]
+North Asia
+Asia Minor
+Arabian Peninsula
+Indian Sub-Continent
+South East Asia
+Oceania
+Persia
+
+[Countries]
+Saudi Arabia
+Kuwait
+Buhrain
+Qatar
+United Arab Emigrants
+Omen
+Yemen
+Turkey
+Cyprus
+Syria
+Iraq
+Jordan
+Lebanon
+Israel
+Russia
+Japan
+North Korea
+South Korea
+Mongolia
+China
+Kazakhstan
+Georgia
+Armenia
+Azerbaijan
+Iran
+Turkmenistan
+Uzbekistan
+Kyrgyzstan
+Afghanistan
+Tajikistan
+Pakistan
+India
+Nepal
+Bhuntan
+Bangladesh
+Sri Lanka
+Maldives
+Myanmar
+Thailand
+Laos
+Vietnam
+Cambodia
+West Malaysia
+Singapore
+Indonesia
+East Malaysia
+Brunei
+Philippines
+
+[Informations]
+Saudi Arabia,Arabian Peninsula,Yemen,Omen,United Arab Emigrants,Qatar,Buhrain,Kuwait,Iraq,Jordan
+Kuwait,Arabian Peninsula,Saudi Arabia,Iraq,Iran
+Buhrain,Arabian Peninsula,Saudi Arabia,Qatar
+Qatar,Arabian Peninsula,Buhrain,Saudi Arabia,United Arab Emigrants
+United Arab Emigrants,Arabian Peninsula,Qatar,Saudi Arabia,Omen
+Omen,Arabian Peninsula,United Arab Emigrants,Saudi Arabia,Yemen
+Yemen,Arabian Peninsula,Saudi Arabia,Omen
+Turkey,Asia Minor,Cyprus,Syria,Iraq,Iran,Armenia,Georgia
+Cyprus,Asia Minor,Turkey,Syria,Israel,Lebanon
+Syria,Asia Minor,Turkey,Iraq,Jordan,Israel,Lebanon,Cyprus
+Iraq,Asia Minor,Iran,Kuwait,Saudi Arabia,Jordan,Syria,Turkey
+Jordan,Asia Minor,Israel,Syria,Iraq,Saudi Arabia
+Lebanon,Asia Minor,Cyprus,Syria,Israel
+Israel,Asia Minor,Cyprus,Lebanon,Jordan,Syria
+Russia,North Asia,Japan,North Korea,China,Mongolia,Kazakhstan,Georgia,Azerbaijan
+Japan,North Asia,Russia,North Korea,South Korea
+North Korea,North Asia,China,Russia,Japan,South Korea
+South Korea,North Asia,North Korea,Japan
+China,North Asia,Philippines,North Korea,Russia,Mongolia,Kazakhstan,India,Myanmar,Vietnam
+Mongolia,North Asia,Russia,China,Kazakhstan
+Kazakhstan,North Asia,Russia,Mongolia,China,Uzbekistan,Kyrgyzstan,Turkmenistan
+Georgia,Persia,Russia,Azerbaijan,Armenia,Turkey
+Armenia,Persia,Georgia,Azerbaijan,Iran,Turkey
+Azerbaijan,Persia,Georgia,Armenia,Iran,Russia
+Iran,Persia,Armenia,Azerbaijan,Turkey,Iraq,Kuwait,Turkmenistan,Afghanistan,Pakistan
+Turkmenistan,Persia,Kazakhstan,Uzbekistan,Afghanistan,Iran
+Uzbekistan,Persia,Kazakhstan,Turkmenistan,Kyrgyzstan,Tajikistan,Afghanistan
+Kyrgyzstan,Persia,Kazakhstan,Uzbekistan,Tajikistan
+Tajikistan,Persia,Uzbekistan,Kyrgyzstan,Afghanistan
+Afghanistan,Persia,Iran,Turkmenistan,Uzbekistan,Tajikistan,Pakistan
+Pakistan,Persia,Iran,Afghanistan,India
+India,Indian Sub-Continent,Pakistan,China,Nepal,Bhuntan,Myanmar,Bangladesh,Maldives,Sri Lanka
+Nepal,Indian Sub-Continent,India
+Bhuntan,Indian Sub-Continent,India
+Bangladesh,Indian Sub-Continent,India,Myanmar
+Sri Lanka,Indian Sub-Continent,India
+Maldives,Indian Sub-Continent,India
+Myanmar,South East Asia,China,India,Bangladesh,Thailand,Laos
+Thailand,South East Asia,Myanmar,Laos,Cambodia,West Malaysia
+Laos,South East Asia,Myanmar,Vietnam,Cambodia,Thailand
+Vietnam,South East Asia,China,Laos,Brunei,East Malaysia,Cambodia
+Cambodia,South East Asia,Thailand,Laos,Vietnam
+West Malaysia,South East Asia,Thailand,East Malaysia,Singapore
+Singapore,South East Asia,West Malaysia,Indonesia
+Indonesia,Oceania,Singapore,East Malaysia,Philippines
+East Malaysia,Oceania,Brunei,Vietnam,West Malaysia,Indonesia,Philippines
+Brunei,Oceania,Vietnam,East Malaysia
+Philippines,Oceania,China,East Malaysia,Indonesia
