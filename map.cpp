@@ -111,7 +111,7 @@ int Continent::computeScoreC(string colorP)
 	string domColor = "NONE";
 	unordered_map<string, Country*> ownedCountries;
 	
-	
+	// initialize the array of countries being owned (having armies on it with no repetions)
 	for (std::pair<std::string, Country*> element : subCountry)
 	{
 		bool check = false;
@@ -134,6 +134,7 @@ int Continent::computeScoreC(string colorP)
 		}
 	}
 
+	// Sums up the number of countries owned for each Player color
 	for (std::pair<std::string, Country*> element : ownedCountries) 
 	{
 		element.second->setOwnedColor();
@@ -159,6 +160,8 @@ int Continent::computeScoreC(string colorP)
 			colorArr[4]++;
 		}
 	}
+
+	// Sets the dominant Player color based on the above calculation
 	for (int i = 0; i < sizeof(colorArr); i++)
 	{
 		if (colorArr[i] > domColorn)
@@ -242,6 +245,7 @@ bool Country::hasOwner() {
 	}
 	return 0;
 }
+
 void Country::setOwnedColor() {
 	string colorDom = "";
 	int armyDom = 0;
@@ -305,8 +309,10 @@ int Country::getEdgeCountrySize() {
 	return edgeCountry.size();
 }
 
+//sets the owner of the country (most armies) and test wheter the Player owns it or not
 int Country::computeScoreR(string colorP)
 {
+	
 	setOwnedColor();
 
 	return (ownerColor == colorP);

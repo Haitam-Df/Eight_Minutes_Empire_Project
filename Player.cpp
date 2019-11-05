@@ -14,7 +14,7 @@ using namespace std;
 Player::Player(int year,Deck* deck,int money, int Id)
 {
 	bidding = new Bidding(year,money);
-	hand = Hand(deck);
+	hand = new Hand(deck);
 	coins = new int(money);
 	id =new int(Id);
 }
@@ -45,7 +45,6 @@ void Player::addOwnCountry(string regionsName, Country* country)
 int Player::computeScoreP(unordered_map<string, Continent*> allContinent)
 {
 	vector <Country*> Carr;
-	vector <Cards*> myHand;
 	int scoreP = 0;
 	int crystal = 0;
 	int ore = 0;
@@ -77,23 +76,22 @@ int Player::computeScoreP(unordered_map<string, Continent*> allContinent)
 	controlledRegions = Carr.size();
 
 	//calculating goods owned
-	myHand = hand.getHand();
-	for (int i = 0; i < myHand.size(); i++) 
+	for (int i = 0; i < hand->getHand().size(); i++) 
 	{
-		if (myHand[i]->good == "Crystal")
+		if (hand->getHand()[i]->good == "Crystal")
 		{
 			crystal++;
 		}
-		else if (myHand[i]->good == "Anvil")
+		else if (hand->getHand()[i]->good == "Anvil")
 		{
 			anvil++;
-		}else if (myHand[i]->good == "Forest")
+		}else if (hand->getHand()[i]->good == "Forest")
 		{
 			tree++;
-		}else if (myHand[i]->good == "Ore")
+		}else if (hand->getHand()[i]->good == "Ore")
 		{
 			ore++;
-		}else if (myHand[i]->good == "Carrot")
+		}else if (hand->getHand()[i]->good == "Carrot")
 		{
 			carrot++;
 		}
@@ -102,61 +100,74 @@ int Player::computeScoreP(unordered_map<string, Continent*> allContinent)
 	switch (crystal) 
 	{
 	case 1:
-		scoreP += 1;
+		scoreP += 1; break;
 	case 2:
-		scoreP += 2;
+		scoreP += 2; break;
 	case 3:
-		scoreP += 3;
+		scoreP += 3; break;
 	case 4:
-		scoreP += 5;
+	case 5:
+	case 7:
+	case 8:
+		scoreP += 5; break;
 	}
 	
 	switch (anvil)
 	{
 	case 2:
-		scoreP += 1;
+	case 3:
+		scoreP += 1; break;
 	case 4:
-		scoreP += 2;
+	case 5:
+		scoreP += 2; break;
 	case 6:
-		scoreP += 3;
+		scoreP += 3; break;
 	case 7:
-		scoreP += 5;
+		scoreP += 5; break;
 	}
 
 	switch (ore)
 	{
 	case 2:
-		scoreP += 1;
+		scoreP += 1; break;
 	case 3:
-		scoreP += 2;
+		scoreP += 2; break;
 	case 4:
-		scoreP += 3;
+		scoreP += 3; break;
 	case 5:
-		scoreP += 5;
+	case 6:
+	case 7:
+	case 8:
+		scoreP += 5; break;
 	}
 
 	switch (tree)
 	{
 	case 2:
-		scoreP += 1;
+	case 3:
+		scoreP += 1; break;
 	case 4:
-		scoreP += 2;
+		scoreP += 2; break;
 	case 5:
-		scoreP += 3;
+		scoreP += 3; break;
 	case 6:
-		scoreP += 5;
+	case 7:
+	case 8:
+		scoreP += 5; break;
 	}
 
 	switch (carrot)
 	{
 	case 3:
-		scoreP += 1;
+	case 4:
+		scoreP += 1; break;
 	case 5:
-		scoreP += 2;
+	case 6:
+		scoreP += 2; break;
 	case 7:
-		scoreP += 3;
+		scoreP += 3; break;
 	case 8:
-		scoreP += 5;
+		scoreP += 5; break;
 	}
 
 	//calculating continents owned
@@ -199,7 +210,7 @@ void Player::addCity(Country* country) {
 	citiesInBoard.push_back(country);
 }
 
-Hand Player::getHand() {
+Hand* Player::getHand() {
 	return hand;
 }
 
@@ -701,7 +712,7 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 
 	if (Ignore()) {
 		// ----------------------ADD ARMIES-------------------------
-		if (actionTook == "Add 1 Army" || actionTook == "Add 3 Armies" || actionTook == "Add 3 Armies (Double Carrot)" || actionTook == "Add 2 Armies") {
+		if (actionTook == "Add 1 Army" || actionTook == "Add 3 Armies" || actionTook == "Add 3 Armies" || actionTook == "Add 2 Armies") {
 			placeNewArmies(actionTook, startingPoint);
 		}
 
@@ -733,7 +744,7 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 				moveArmies(actionTook,startingPoint);
 			}
 		}
-		if (actionTook == "Move 2 Armies" || actionTook == "Move 6 Armies" || actionTook == "Move 3 armies" || actionTook == "Move 4 Armies" || actionTook == "Move 5 Armies" || actionTook == "Move 3 Armies via Ship (move over land and/or water)" || actionTook == "Move 4 Armies via Ship (move over land and/or water)" || actionTook == "Move 4 Armies (Double Anvil) **" || actionTook == "Move 2 Armies via Ship (move over land and/or water)") {
+		if (actionTook == "Move 2 Armies" || actionTook == "Move 6 Armies" || actionTook == "Move 3 armies" || actionTook == "Move 4 Armies" || actionTook == "Move 5 Armies" || actionTook == "Move 3 Armies via Ship (move over land and/or water)" || actionTook == "Move 4 Armies via Ship (move over land and/or water)" || actionTook == "Move 4 Armies" || actionTook == "Move 2 Armies via Ship (move over land and/or water)") {
 			moveArmies(actionTook, startingPoint);
 		}
 		if (actionTook == "Build City") {

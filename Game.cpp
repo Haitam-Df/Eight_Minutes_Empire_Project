@@ -63,9 +63,10 @@ void Game::playerBid() {
 		cout << endl;
 		cout << endl;
 		cout << "For Player " << (i + 1) << endl;
+		// Player Bid
 		allPlayers[i]->getBiddingInstance()->runOnce();
 
-
+		//Those if is not check which Player bid the most
 		if (allPlayers[i]->getBiddingInstance()->getBidding() > mostBidding) {
 			positionPlayer = i;
 			mostBidding = allPlayers[i]->getBiddingInstance()->getBidding();
@@ -135,6 +136,7 @@ void Game::setStartingGameCountry() {
 
 	for (int x = 0; x < allPlayers.size(); x++) {
 		map->addArmyToCountry(startingGameCountry, allPlayers[x]->getColor(), 3);
+		// Add 3 armies to the starting point for each player
 		for (int y = 0; y < 3; y++) {
 			allPlayers[x]->addArmy(map->getCountryByName(startingGameCountry));
 		}
@@ -142,7 +144,7 @@ void Game::setStartingGameCountry() {
 }
 
 
-
+// look if the color was choose to play
 bool Game::verifyColor(vector<string> colorUsed, string colorChoose, int nbOfPlayer) {
 	for (int x = 0; x < allColors.size(); x++) {
 		if (allColors[x] == colorChoose ) {
@@ -166,8 +168,8 @@ void Game::setMap(Map* map) {
 
 void Game::displayCountry() {
 	string countryChoose;
-
-	while (true) {
+	int x = 0;
+	while (x<10) {
 		cout << endl;
 		cout << endl;
 		cout << "which country you want to see the info ?" << endl;
@@ -176,9 +178,11 @@ void Game::displayCountry() {
 			map->displayCountryInfo(countryChoose);
 			cout << endl;
 		}
+		x++;
 	}
 }
 
+// if 2 players loop until 10 whites armies are in the board
 void Game::if2Players() {
 	if (allPlayers.size() == 2) {
 		cout << endl;
@@ -214,6 +218,7 @@ void Game::if2Players() {
 	}
 }
 
+// Player choose a color to play with
 void Game::playerChooseColor(int nbOfPlayer) {
 	 vector<string> colorUsed;
 	 string colorChoose;
@@ -256,18 +261,22 @@ void Game::playerChooseAction(Player* playerTurn) {
 		cout << endl;
 		cout << "Which action you want to perform?" << endl;
 		cin >> action;
+
+		//There is 6 action possible not more or less
 		if (action > 0 && action < 7) {
-			if (playerTurn->getHand().getCostCard(action - 1) <= *playerTurn->getCoins()) {
+			// Does the player have enaugh coins
+			if (playerTurn->getHand()->getCostCard(action - 1) <= *playerTurn->getCoins()) {
 
 				for (int card = 0; card < deck->getHand().size(); card++) {
 					if (card == (action - 1)) {
+						// player does the action of the card he chose
 						playerTurn->makeAction(deck->getHand()[card]->action , map->getCountryByName(startingGameCountry), allPlayers);
 					}
 				}
-
-				playerTurn->getHand().exchange(action - 1);
-				playerTurn->PayCoin(playerTurn->getHand().getCostCard(action - 1));
-				addSupply(playerTurn->getHand().getCostCard(action - 1));
+				
+				playerTurn->getHand()->exchange(action - 1);
+				playerTurn->PayCoin(playerTurn->getHand()->getCostCard(action - 1));
+				addSupply(playerTurn->getHand()->getCostCard(action - 1));
 				break;
 			}
 			else {
@@ -300,6 +309,7 @@ void Game::computeScoreG()
 	int scoredom = 0;
 	int playerdom = 0;
 
+	//Compute the score for each player and sets the winner of the game
 	for (int i = 0; i < allPlayers.size(); i++)
 	{
 		int computeScore = allPlayers[i]->computeScoreP(map->getAllContinent());
@@ -310,17 +320,20 @@ void Game::computeScoreG()
 
 		}
 		else 
-		{
+		{	
+			// if score is tied: check if player has more coins than dominant player
 			if (computeScore == scoredom && allPlayers[i]->getCoins() > allPlayers[playerdom]->getCoins()) 
 			{
 				scoredom = computeScore;
 				playerdom = (i + 1);
 			}
+			// if score is tied: check if player has more armies on board than dominant player
 			else if (computeScore == scoredom && allPlayers[i]->numArmiesOnBoard > allPlayers[playerdom]->numArmiesOnBoard)
 			{
 				scoredom = computeScore;
 				playerdom = (i + 1);
 			}
+			// if score is tied: check if player has more country owned than dominant player
 			else if (computeScore == scoredom && allPlayers[i]->controlledRegions > allPlayers[playerdom]->controlledRegions)
 			{
 				scoredom = computeScore;

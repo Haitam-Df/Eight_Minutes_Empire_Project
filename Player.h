@@ -16,7 +16,7 @@ private:
 	int* coins;
 	int* id;
 	Bidding* bidding;
-	Hand hand;
+	Hand* hand;
 	string colorArmy;
 	unordered_map<string, Country*> ownCountry;
 	vector<Country*> armiesInBoard;
@@ -52,7 +52,7 @@ public:
 	int numArmiesOnBoard;
 	int controlledRegions;
 
-	Hand getHand();
+	Hand* getHand();
 	string getColor();
 	int* getCoins();
 	Bidding* getBiddingInstance();

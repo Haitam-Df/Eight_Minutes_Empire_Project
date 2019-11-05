@@ -32,7 +32,7 @@ Deck::Deck() {
 	Cards* c10 = new Cards("Add 3 Armies", "Carrot");
 	Cards* c11 = new Cards("Move 4 Armies", "Carrot");
 	Cards* c12 = new Cards("Move 5 Armies", "Carrot");
-	Cards* c13 = new Cards("Add 3 Armies (Double Carrot)", "Carrot");
+	Cards* c13 = new Cards("Add 3 Armies", "Carrot");
 	Cards* c14 = new Cards("Move 3 Armies via Ship (move over land and/or water)", "Carrot");
 	Cards* c15 = new Cards("Add 4 Armies or Move 2 Armies", "Carrot"); // special case
 	Cards* c16 = new Cards("Move 4 Armies", "Carrot");
@@ -46,7 +46,7 @@ Deck::Deck() {
 
 	Cards* c25 = new Cards("Move 3 Armies via Ship (move over land and/or water)", "Anvil");
 	Cards* c20 = new Cards("Build City", "Anvil");
-	Cards* c17 = new Cards("Move 4 Armies (Double Anvil) **", "Anvil");
+	Cards* c17 = new Cards("Move 4 Armies", "Anvil");
 	Cards* c42 = new Cards("Add 3 Armies or Move 3 Armies", "Anvil"); // special case
 
 	Cards* c26 = new Cards("Move 2 Armies", "Ore");
@@ -201,7 +201,8 @@ void Hand::exchange(int position) {
 }
 
 vector<Cards*> Hand::getHand() {
-	return deck->getHand();
+
+	return playerHand;
 }
 Hand::Hand(Deck* y) {
 	vector<Cards*> playerHand;

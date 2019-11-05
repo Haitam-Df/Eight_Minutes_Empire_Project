@@ -9,7 +9,7 @@
 #include <sstream> 
 
 using namespace std;
-
+/*
 int main() {
 
 	
@@ -40,7 +40,7 @@ int main() {
 	//This function is for testing the Non-Color for 2 players or to see starting point Army
 	//game->displayCountry();
 
-//	game->computeScoreG();
+	game->computeScoreG();
 
 	
-}
+}*/

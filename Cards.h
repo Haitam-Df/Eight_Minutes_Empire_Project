@@ -6,7 +6,7 @@ using namespace std;
 
 class Cards {
 public:
-	Cards(string good, string action);
+	Cards(string action, string good);
 	string good;
 	string action;
 
