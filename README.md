@@ -15,5 +15,5 @@
 ## What does each driver do
 * Driver 1 demonstrates the feature requirement for Part 1
 * Driver 2 demonstrates the feature requirement for Part 2
-* Drvier 3 demonstrates the feature requirement for Part 3,4,5,6
+* Driver 3 demonstrates the feature requirement for Part 3,4,5,6
 
