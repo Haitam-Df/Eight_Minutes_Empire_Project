@@ -6,6 +6,8 @@
 #include <cstdlib>
 using namespace std;
 
+
+
 //Continent implementation
 Continent::Continent(string name) {
 	continentName = name;
@@ -329,6 +331,21 @@ string Country::getOwnerColor()
 
 
 //Map implementation
+Map* Map::m_instance = NULL;
+
+Map* Map::getInstance()
+{
+	if (m_instance == NULL) {
+		m_instance = new Map();
+	}
+	else {
+		cout << " There is already an map in this game ! " << endl;
+		cout << " Now exiting the game..." << endl;
+		exit(EXIT_FAILURE);
+	}
+	return(m_instance);
+}
+
 Map::Map() {
 	unordered_map<string, Country*> allCountry;
 	unordered_map<string, Continent*> allContinent;
@@ -479,6 +496,7 @@ Continent* Map::getContinent(string name) {
 Country* Map::getCountry(string name) {
 	return allCountry[name];
 }
+
 bool Map::isCountryExist(string name) {
 	return !(allCountry.find(name) == allCountry.end());
 }

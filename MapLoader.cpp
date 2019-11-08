@@ -6,6 +6,7 @@
 
 #include "MapLoader.h"
 
+
 using namespace std;
 
 //MapLoader implementation
@@ -228,7 +229,7 @@ int MapLoader::loadMap() {
 		ifstream file(filename);
 
 		if (!file.fail()) {
-			Map* map = new Map();
+			Map* map = Map::getInstance();
 			setMap(map);
 			if (isValidMap(file)) {
 				return 1;

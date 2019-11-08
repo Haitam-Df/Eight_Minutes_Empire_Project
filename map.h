@@ -14,6 +14,7 @@ class Player;
  
 
 class Continent {
+
 public:
 	Continent(string name);
 	~Continent();
@@ -63,16 +64,16 @@ private:
 };
 
 class Map {
+
 public:
-	Map();
-	~Map();
 	bool createContinent(string continentName);
 	bool createCountry(string countryName);
 	bool isContinentExist(string name);
 	bool isCountryExist(string name);
 	Continent* getContinent(string name);
 	Country* getCountry(string name);
-
+	static Map* getInstance();
+	~Map();
 
 	void askBuildMapQuestion();
 	void startGame();
@@ -94,8 +95,9 @@ public:
 
 
 private:
+	Map();
 	
 	unordered_map<string, Country*> allCountry;
 	unordered_map<string, Continent*> allContinent;
-
+	static Map* m_instance;
 };
