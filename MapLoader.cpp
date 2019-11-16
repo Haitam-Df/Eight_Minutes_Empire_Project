@@ -6,7 +6,6 @@
 
 #include "MapLoader.h"
 
-
 using namespace std;
 
 //MapLoader implementation
@@ -235,8 +234,9 @@ int MapLoader::loadMap() {
 				return 1;
 			}
 			else {
-				delete map;
-				map = NULL;
+				Map::releaseInstance();
+				//delete map;
+				//map = NULL;
 				cout << endl;
 				cout << "This is NOT a valid map!" << endl;
 			}
