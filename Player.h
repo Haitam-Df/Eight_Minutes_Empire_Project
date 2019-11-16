@@ -1,11 +1,10 @@
-
 #pragma once
 #include<iostream>
 #include "Bidding.h"
 #include "map.h"
 #include "Cards.h"
+#include  "PlayerStrategies.h"
 #include <unordered_map>
-
 
 using namespace std;
 class Country;
@@ -18,6 +17,8 @@ private:
 	Bidding* bidding;
 	Hand* hand;
 	string colorArmy;
+	bool* isCPU;
+	PlayerStrategies* userStrategy;
 	unordered_map<string, Country*> ownCountry;
 	vector<Country*> armiesInBoard;
 	vector<Country*> citiesInBoard;
@@ -27,6 +28,7 @@ private:
 public:
 
 	Player(int year, Deck* deck, int money, int Id);
+	Player(int year, Deck* deck, int money, int Id, bool CPU, int strat);
 	Player();
 
 	void placeNewArmies(string action, Country* startingPoint);
@@ -45,6 +47,7 @@ public:
 	void addCity(Country* country);
 	void DestroyArmy(Country* country);
 	int* getId();
+	bool* getStatus();
 	void displayInfo();
 
 
@@ -56,6 +59,7 @@ public:
 	string getColor();
 	int* getCoins();
 	Bidding* getBiddingInstance();
+	PlayerStrategies* getUserStrat();
 
 
 

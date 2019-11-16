@@ -9,7 +9,7 @@ using namespace std;
 
 Bidding::Bidding() {};
 
-Bidding::Bidding(int year,int totalCoin)
+Bidding::Bidding(int year, int totalCoin)
 {
 	age = new int(year);
 	playerTotalCoin = new int(totalCoin);
@@ -30,10 +30,10 @@ int Bidding::getAge()
 }
 
 // you can only bid one time
-void Bidding::runOnce()
+void Bidding::runOnce(bool& CPU)
 {
 	if (OnlyOnce == 0) {
-		bid();
+		bid(CPU);
 		OnlyOnce++;
 	}
 	else {
@@ -43,13 +43,21 @@ void Bidding::runOnce()
 }
 
 // give the player access to one bidding
-void Bidding::bid()
+void Bidding::bid(bool& CPU)
 {
 	int selectedCoin;
 	while (true) {
 		cout << endl;
-		cout << "how many coins do you want to bid ?" << endl;
-		cin >> selectedCoin;
+		if (!CPU) {
+			cout << "how many coins do you want to bid ?" << endl;
+			cin >> selectedCoin;
+		}
+		else {
+			selectedCoin = rand() % 10;
+			cout << " The CPU bid for ";
+			cout << selectedCoin;
+			cout << " coins" << endl << endl;
+		}
 		if (selectedCoin <= *playerTotalCoin && selectedCoin >= 0) {
 			biddingCoins = new int(selectedCoin);
 			break;

@@ -3,6 +3,7 @@
 #include<iostream>
 #include <cstdlib>
 #include <algorithm>
+#include <time.h>
 
 
 using namespace std;
@@ -31,6 +32,8 @@ int Game::nbOfTurn(int nbOfPlayer) {
 
 void Game::loadPlayer() {
 	int nbPlayer = 0;
+	int nbCPU = -1;
+	srand(time(NULL));
 	// GET HOW MANY PLAYER
 	while (true) {
 		cout << endl;
@@ -40,17 +43,54 @@ void Game::loadPlayer() {
 		if (nbPlayer > 1 && nbPlayer < 6)
 			break;
 	}
+
+	while (true) {
+		cout << endl;
+		cout << endl;
+		cout << "How many of the players are CPU (0 to " << nbPlayer << ")?" << endl;
+		cin >> nbCPU;
+		if (nbCPU > -1 && nbCPU <= nbPlayer)
+			break;
+	}
+	int totalPlayers = nbPlayer;
+	nbPlayer = nbPlayer - nbCPU;
+
 	// GET PLAYER AGE
+
 	for (int x = 0; x < nbPlayer; x++) {
 		cout << endl;
 		cout << endl;
-		cout << "How old is the "<<(x+1)<<" Player?" << endl;
+		cout << "How old is the " << (x + 1) << " Player?" << endl;
 		int age;
 		cin >> age;
-		allPlayers.push_back(new Player(age, deck, nbOfCoin(nbPlayer),(x+1)));
+		allPlayers.push_back(new Player(age, deck, nbOfCoin(totalPlayers), (x + 1), false, 0));
 	}
 
-	playerChooseColor(nbPlayer);
+	int ageCPU;
+	for (int x = 0; x < nbCPU; x++) {
+		ageCPU = rand() % 12 + 1;
+		cout << endl;
+		cout << endl;
+		cout << "Which strategy are you using for the " << (x + 1) << " CPU" << endl;
+		int strat = -1;
+		cout << "1) Greedy ( loves to build and destroy)" << endl;
+		cout << "2) Moderate ( loves to add to countries he owns)" << endl;
+		while (true) {
+			cin >> strat;
+			if (strat > 0 && strat < 3) {
+				break;
+			}
+		}
+		cout << "Player " << (nbPlayer + 1) << " (CPU) age is " << ageCPU << endl;
+		allPlayers.push_back(new Player(ageCPU, deck, nbOfCoin(totalPlayers), (nbPlayer + 1), true, strat));
+		nbPlayer += 1;
+	}
+
+
+
+	playerChooseColor(totalPlayers);
+
+
 
 }
 
@@ -58,13 +98,14 @@ void Game::playerBid() {
 	int positionPlayer = 0;
 	int mostBidding = 0;
 	int agePlayer = 1000;
-	
+
 	for (int i = 0; i < allPlayers.size(); i++) {
 		cout << endl;
 		cout << endl;
 		cout << "For Player " << (i + 1) << endl;
 		// Player Bid
-		allPlayers[i]->getBiddingInstance()->runOnce();
+		bool* temp = allPlayers[i]->getStatus();
+		allPlayers[i]->getBiddingInstance()->runOnce(*temp);
 
 		//Those if is not check which Player bid the most
 		if (allPlayers[i]->getBiddingInstance()->getBidding() > mostBidding) {
@@ -72,7 +113,7 @@ void Game::playerBid() {
 			mostBidding = allPlayers[i]->getBiddingInstance()->getBidding();
 			agePlayer = allPlayers[i]->getBiddingInstance()->getAge();
 		}
-		else if((allPlayers[i]->getBiddingInstance()->getBidding() == mostBidding) && (allPlayers[i]->getBiddingInstance()->getAge() < allPlayers[positionPlayer]->getBiddingInstance()->getAge())){
+		else if ((allPlayers[i]->getBiddingInstance()->getBidding() == mostBidding) && (allPlayers[i]->getBiddingInstance()->getAge() < allPlayers[positionPlayer]->getBiddingInstance()->getAge())) {
 			positionPlayer = i;
 			mostBidding = allPlayers[i]->getBiddingInstance()->getBidding();
 			agePlayer = allPlayers[i]->getBiddingInstance()->getAge();
@@ -80,30 +121,30 @@ void Game::playerBid() {
 	}
 	cout << endl;
 	cout << endl;
-		cout << "Player " << (positionPlayer+1) << " won the bid!!" << endl;
+	cout << "Player " << (positionPlayer + 1) << " won the bid!!" << endl;
 
-		//reorganize the list to let the winner of the bid starts first
-		vector<Player*> reorganizePlayer;
-		for (int x = positionPlayer; x < allPlayers.size(); x++) {
-			reorganizePlayer.push_back(allPlayers[x]);
-		}
-		for (int x = 0; x < positionPlayer; x++) {
-			reorganizePlayer.push_back(allPlayers[x]);
-		}
-		for (int x = 0; x < allPlayers.size(); x++) {
-			cout << allPlayers[x]->getBiddingInstance()->getAge() << endl;
-		}
-		cout << endl;
-		for (int x = 0; x < reorganizePlayer.size(); x++) {
-			cout << reorganizePlayer[x]->getBiddingInstance()->getAge() << endl;
-		}
-		allPlayers = reorganizePlayer;
+	//reorganize the list to let the winner of the bid starts first
+	vector<Player*> reorganizePlayer;
+	for (int x = positionPlayer; x < allPlayers.size(); x++) {
+		reorganizePlayer.push_back(allPlayers[x]);
+	}
+	for (int x = 0; x < positionPlayer; x++) {
+		reorganizePlayer.push_back(allPlayers[x]);
+	}
+	for (int x = 0; x < allPlayers.size(); x++) {
+		cout << allPlayers[x]->getBiddingInstance()->getAge() << endl;
+	}
+	cout << endl;
+	for (int x = 0; x < reorganizePlayer.size(); x++) {
+		cout << reorganizePlayer[x]->getBiddingInstance()->getAge() << endl;
+	}
+	allPlayers = reorganizePlayer;
 
-		//Need to remove the bid of the first player (The one who won the bid)
-		allPlayers[0]->PayCoin(mostBidding);
+	//Need to remove the bid of the first player (The one who won the bid)
+	allPlayers[0]->PayCoin(mostBidding);
 
-		//Add the bid to the supply bank
-		addSupply(mostBidding);
+	//Add the bid to the supply bank
+	addSupply(mostBidding);
 }
 
 void Game::createDeck() {
@@ -184,6 +225,17 @@ void Game::displayCountry() {
 
 // if 2 players loop until 10 whites armies are in the board
 void Game::if2Players() {
+	bool player1CPU = false;
+	bool player2CPU = false;
+	
+
+	if (*allPlayers.at(0)->getUserStrat()->getStrategy() == 1 || *allPlayers.at(0)->getUserStrat()->getStrategy() == 2) {
+		player1CPU = true;
+	}
+	if (*allPlayers.at(1)->getUserStrat()->getStrategy() == 1 || *allPlayers.at(1)->getUserStrat()->getStrategy() == 2) {
+		player2CPU = true;
+	}
+
 	if (allPlayers.size() == 2) {
 		cout << endl;
 		cout << endl;
@@ -196,8 +248,11 @@ void Game::if2Players() {
 				//Player1
 				cout << endl;
 				cout << endl;
+
 				cout << "Player 1 choose a country to place a NON-COLOR Army" << endl;
-				cin >> countryChoose;
+				if (player1CPU) {
+					countryChoose = map->getRandomCountry();
+				}else {cin >> countryChoose; }
 				if (map->isCountryExist(countryChoose)) {
 					map->addArmyToCountry(countryChoose, "white", 1);
 					break;
@@ -208,7 +263,10 @@ void Game::if2Players() {
 				cout << endl;
 				cout << endl;
 				cout << "Player 2 choose a country to place a NON-COLOR Army" << endl;
-				cin >> countryChoose;
+				if (player2CPU) {
+					countryChoose = map->getRandomCountry();
+				}
+				else { cin >> countryChoose; }
 				if (map->isCountryExist(countryChoose)) {
 					map->addArmyToCountry(countryChoose, "white", 1);
 					break;
@@ -257,14 +315,52 @@ void Game::addSupply(int money) {
 void Game::playerChooseAction(Player* playerTurn) {
 	int action = 0;
 	deck->showHand();
+	bool missingCoins = true;
 	while (true) {
 		cout << endl;
-		cout << "Which action you want to perform?" << endl;
-		cin >> action;
 
+		playerTurn->getUserStrat()->changeStrat();
+
+		if(*playerTurn->getUserStrat()->getStrategy() == 0){ 
+		
+		cout << "Which action you want to perform?" << endl;
+		action = playerTurn->getUserStrat()->play(deck->getHand());
+		
+		}
+		else {
+			if (*playerTurn->getUserStrat()->getStrategy() == 1) {
+				
+				if (missingCoins) {
+					cout << " the CPU will play ( greedy) : ";
+
+					action = playerTurn->getUserStrat()->play(deck->getHand());
+					cout << action << endl << endl;
+				}
+				else {
+					cout << " The CPU tried to play a card but is missing coins so it will skip its turn" << endl;
+					action = 1;
+					playerTurn->getUserStrat()->setAction("ignore");
+				}
+
+			}
+			if (*playerTurn->getUserStrat()->getStrategy() == 2) {
+				
+				if (missingCoins) {
+					cout << " the CPU will play ( moderate ) : ";
+					action = playerTurn->getUserStrat()->play(deck->getHand());
+					cout << action << endl << endl;
+				}
+				else {
+				cout << " The CPU tried to play a card but is missing coins so it will skip its turn" << endl;
+				action = 1;
+				playerTurn->getUserStrat()->setAction("ignore");
+			}
+			}
+
+		}
 		//There is 6 action possible not more or less
 		if (action > 0 && action < 7) {
-			// Does the player have enaugh coins
+			// Does the player have enough coins
 			if (playerTurn->getHand()->getCostCard(action - 1) <= *playerTurn->getCoins()) {
 
 				for (int card = 0; card < deck->getHand().size(); card++) {
@@ -280,7 +376,8 @@ void Game::playerChooseAction(Player* playerTurn) {
 				break;
 			}
 			else {
-				cout << "Not enaugh coins in your bank" << endl;
+				cout << "Not enough coins in your bank" << endl;
+				missingCoins = false;
 			}
 		}
 	}

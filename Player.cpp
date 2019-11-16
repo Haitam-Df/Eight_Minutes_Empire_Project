@@ -11,15 +11,27 @@
 
 using namespace std;
 
-Player::Player(int year,Deck* deck,int money, int Id)
+Player::Player(int year, Deck* deck, int money, int Id)
 {
-	bidding = new Bidding(year,money);
+	bidding = new Bidding(year, money);
 	hand = new Hand(deck);
 	coins = new int(money);
-	id =new int(Id);
+	id = new int(Id);
+}
+Player::Player(int year, Deck* deck, int money, int Id, bool CPU, int strat)
+{
+	bidding = new Bidding(year, money);
+	hand = new Hand(deck);
+	coins = new int(money);
+	id = new int(Id);
+	isCPU = new bool(CPU);
+	userStrategy = new PlayerStrategies(strat);
 }
 Bidding* Player::getBiddingInstance() {
 	return bidding;
+}
+PlayerStrategies* Player::getUserStrat() {
+	return userStrategy;
 }
 
 void Player::setColor(string color) {
@@ -33,12 +45,15 @@ string Player::getColor() {
 int* Player::getId() {
 	return id;
 }
+bool* Player::getStatus() {
+	return isCPU;
+}
 
-void Player::addOwnCountry(string regionsName, Country* country) 
+void Player::addOwnCountry(string regionsName, Country* country)
 {
 	ownCountry[regionsName] = country;
 	cout << endl;
-	cout << regionsName <<" is now yours beware of the ennemies !" << endl;
+	cout << regionsName << " is now yours beware of the ennemies !" << endl;
 }
 
 
@@ -76,7 +91,7 @@ int Player::computeScoreP(unordered_map<string, Continent*> allContinent)
 	controlledRegions = Carr.size();
 
 	//calculating goods owned
-	for (int i = 0; i < hand->getHand().size(); i++) 
+	for (int i = 0; i < hand->getHand().size(); i++)
 	{
 		if (hand->getHand()[i]->good == "Crystal")
 		{
@@ -85,19 +100,22 @@ int Player::computeScoreP(unordered_map<string, Continent*> allContinent)
 		else if (hand->getHand()[i]->good == "Anvil")
 		{
 			anvil++;
-		}else if (hand->getHand()[i]->good == "Forest")
+		}
+		else if (hand->getHand()[i]->good == "Forest")
 		{
 			tree++;
-		}else if (hand->getHand()[i]->good == "Ore")
+		}
+		else if (hand->getHand()[i]->good == "Ore")
 		{
 			ore++;
-		}else if (hand->getHand()[i]->good == "Carrot")
+		}
+		else if (hand->getHand()[i]->good == "Carrot")
 		{
 			carrot++;
 		}
 	}
 
-	switch (crystal) 
+	switch (crystal)
 	{
 	case 1:
 		scoreP += 1; break;
@@ -111,7 +129,7 @@ int Player::computeScoreP(unordered_map<string, Continent*> allContinent)
 	case 8:
 		scoreP += 5; break;
 	}
-	
+
 	switch (anvil)
 	{
 	case 2:
@@ -171,7 +189,7 @@ int Player::computeScoreP(unordered_map<string, Continent*> allContinent)
 	}
 
 	//calculating continents owned
-	for (std::pair<std::string, Continent*> element : allContinent) 
+	for (std::pair<std::string, Continent*> element : allContinent)
 	{
 		scoreP += element.second->computeScoreC(colorArmy);
 	}
@@ -190,13 +208,13 @@ void Player::PayCoin(int cost) {
 void Player::displayInfo() {
 	cout << endl;
 	cout << endl;
-	cout << *getId()<< " [PLAYER]" << endl;
-	cout << *getCoins()<< " [COINS]" << endl;
+	cout << *getId() << " [PLAYER]" << endl;
+	cout << *getCoins() << " [COINS]" << endl;
 	cout << *coins << endl;
 
 }
 
-int* Player::getCoins() 
+int* Player::getCoins()
 {
 	return coins;
 }
@@ -222,14 +240,14 @@ void Player::moveArmies(string action, Country* startingPoint) {
 	string color = getColor();
 	int move;
 	int current = 0;
-	char answer[100];
+	string answer;
 	string start;
 	string userAnswer;
 	bool real = false;
 	unordered_map<string, Country*> temp;
 	unordered_map<string, Country*> tempStart;
+	 
 
-	
 	string tmp;
 	stringstream ss(action);
 	ss >> tmp >> move;
@@ -238,22 +256,21 @@ void Player::moveArmies(string action, Country* startingPoint) {
 	cout << "You have an army in these countries :" << endl;
 	for (int i = 0; i < armiesInBoard.size(); i++) {
 
-	// we get the name of each country that the player has an army in
+		// we get the name of each country that the player has an army in
 		cout << armiesInBoard.at(i)->getCountryName() << endl;
 	}
 	cout << endl;
 
 	cout << "Please select the starting country to move an army" << endl;
 
-	cin.ignore();
-	cin.getline(answer, 100);
-
+	getline(cin, answer);
+	getline(cin, answer);
 	cout << endl;
 	cout << endl;
 	start = answer;   // we want to keep the first country in a string because we are going to delete the army from there and move it to the new location
 
 	for (int i = 0; i < armiesInBoard.size(); i++) {
-		
+
 		if (armiesInBoard.at(i)->getCountryName() == answer) {            // we also keep the location of the starting point to remove it after
 			current = i;
 		}
@@ -271,135 +288,134 @@ void Player::moveArmies(string action, Country* startingPoint) {
 	}
 
 	do {
-			if ((move-1) == 0) {   // if you only have one move , we will force you to  select a Country to move to
-				cout << "you have to pick a country to move the army because you have no more move left" << endl;
+		if ((move - 1) == 0) {   // if you only have one move , we will force you to  select a Country to move to
+			cout << "you have to pick a country to move the army because you have no more move left" << endl;
+			userAnswer = "move";
+			cout << endl;
+			cout << endl;
+			cout << "Select a country to move the army" << endl;
+			getline(cin, answer);
+			getline(cin, answer);
+
+			move -= 1;
+		}
+
+		else {                  // explore or move , you select if you want to go further or to move to that country
+			cout << " do you want to move armies or explore the map to find a country? (explore or move) REMEMBER YOU HAVE "
+				<< move << " MOVES LEFT" << endl;
+			cin >> userAnswer;
+			cout << endl;
+			cout << endl;
+		}
+
+
+		if (userAnswer == "explore") {
+			move -= 1;
+			cout << "Which Country do you want to explore?" << endl;
+			getline(cin, answer);
+			getline(cin, answer);
+			cout << endl;
+			cout << endl;
+
+			temp = temp.at(answer)->getEdgeCountry();            // we get the new unordered map of edge countries to print it
+
+			cout << " List of edge countries : " << endl;
+
+			for (auto it = temp.begin(); it != temp.end(); ++it) {
+				cout << " " << it->first << endl;
+			}
+
+			if (move == 0) {
 				userAnswer = "move";
-				cout << endl;
-				cout << endl;
-				cout << "Select a country to move the army" << endl;
+			}
+		}
 
-				cin.getline(answer, 100);
+		// if they move, we have to remove the armies from the country vector and also , from the player ArmiesInBoard vector
+		else if (userAnswer == "move") {
+
+			if (move > 1) {
+				cout << "To which country do you want to move an army ?" << endl;
+				getline(cin, answer);
 
 				move -= 1;
 			}
-	
-			else {                  // explore or move , you select if you want to go further or to move to that country
-				cout << " do you want to move armies or explore the map to find a country? (explore or move) REMEMBER YOU HAVE "
-					<< move << " MOVES LEFT" << endl;
-				cin >> userAnswer;
-				cout << endl;
-				cout << endl;
+
+
+			for (int i = 0; i < armiesInBoard.size(); i++) {
+
+				if (armiesInBoard.at(i)->getCountryName() == start) {      // we kept the starting country so we can remove it from both arrays
+					armiesInBoard.at(i)->DestroyArmies(color);
+					armiesInBoard.erase(armiesInBoard.begin() + i);
+					addArmy(temp.at(answer));                         // at the same time we can the new army in ArmyInBoard
+					break;
+				}
 			}
-			
 
-			if (userAnswer == "explore") {
-				move -= 1;
-				cout << "Which Country do you want to explore?"<<endl;
-				cin.ignore();
-				cin.getline(answer,100);
+			temp.at(answer)->addArmies(color, 1);               // add an army to the vector of that Country
+
+
+			if (move != 0) {                // same as the one before , we select which army we want to move , etc
+				cout << " You have an army in these countries :" << endl;
+				for (int i = 0; i < armiesInBoard.size(); i++) {
+
+
+					cout << armiesInBoard.at(i)->getCountryName() << endl;
+				}
+
+				cout << "Please select the starting country to move an army" << endl;
+				getline(cin, answer);
+				getline(cin, answer);
 				cout << endl;
 				cout << endl;
+				start = answer;
 
-				temp = temp.at(answer)->getEdgeCountry();            // we get the new unordered map of edge countries to print it
-			
+				for (int i = 0; i < armiesInBoard.size(); i++) {
+
+					if (armiesInBoard.at(i)->getCountryName() == answer) {
+						current = i;
+					}
+				}
+
+				cout << "here is the list of country related to " << armiesInBoard.at(current)->getCountryName() << endl;
+
+				temp = armiesInBoard.at(current)->getEdgeCountry();
+				tempStart = temp;
 				cout << " List of edge countries : " << endl;
 
 				for (auto it = temp.begin(); it != temp.end(); ++it) {
 					cout << " " << it->first << endl;
+
 				}
 
-				if (move == 0) {
-					userAnswer = "move";
-				}
 			}
-		
-			// if they move, we have to remove the armies from the country vector and also , from the player ArmiesInBoard vector
-			else if(userAnswer =="move") {
-				
-				if (move > 1) {
-					cout << "To which country do you want to move an army ?" << endl;
-					cin.ignore();
-					cin.getline(answer, 100);
-
-					move -= 1;
-				}
-				
-				
-				for (int i = 0; i < armiesInBoard.size(); i++) {
-
-					if (armiesInBoard.at(i)->getCountryName() == start) {      // we kept the starting country so we can remove it from both arrays
-						armiesInBoard.at(i)->DestroyArmies(color);
-						armiesInBoard.erase(armiesInBoard.begin() + i);
-						addArmy(temp.at(answer));                         // at the same time we can the new army in ArmyInBoard
-						break;
-					}
-				}
-				
-				temp.at(answer)->addArmies(color, 1);               // add an army to the vector of that Country
 
 
-				if (move != 0) {                // same as the one before , we select which army we want to move , etc
-					cout << " You have an army in these countries :" << endl;
-					for (int i = 0; i < armiesInBoard.size(); i++) {
-
-
-						cout << armiesInBoard.at(i)->getCountryName() << endl;
-					}
-
-					cout << "Please select the starting country to move an army" << endl;
-					
-					cin.getline(answer, 100);
-					cout << endl;
-					cout << endl;
-					start = answer;
-
-					for (int i = 0; i < armiesInBoard.size(); i++) {
-
-						if (armiesInBoard.at(i)->getCountryName() == answer) {
-							current = i;
-						}
-					}
-
-					cout << "here is the list of country related to " << armiesInBoard.at(current)->getCountryName() << endl;
-
-					temp = armiesInBoard.at(current)->getEdgeCountry();
-					tempStart = temp;
-					cout << " List of edge countries : " << endl;
-
-					for (auto it = temp.begin(); it != temp.end(); ++it) {
-						cout << " " << it->first << endl;
-
-					}
-
-				}
-
-
+		}
+		else {
+			// if they write anything else than , explore or move
+			if ((move - 1) == 0) {
+				cout << "You dont have enough moves to explore" << endl;
 			}
 			else {
-					// if they write anything else than , explore or move
-				 if ((move - 1) == 0) {
-					 cout << "You dont have enough moves to explore" << endl;
-				 }
-				 else {
-					 cout << "Please write explore or move" << endl;
-				 }
+				cout << "Please write explore or move" << endl;
 			}
-
-		} while (move != 0);
-
-
-		// final result 
-		cout << endl<<endl;
-		cout << "Here is your current number of armies and where they are : " << endl;
-		cout << " You have " << armiesInBoard.size() << " armies" << endl;
-		cout << " List of armies: " << endl;
-		for (int i = 0; i < armiesInBoard.size(); i++) {
-
-			// we get the name of each country that the player has an army in
-			cout << armiesInBoard.at(i)->getCountryName() << endl;
 		}
-		cout << endl;
-		cout << endl;
+
+	} while (move != 0);
+
+
+	// final result 
+	cout << endl << endl;
+	cout << "Here is your current number of armies and where they are : " << endl;
+	cout << " You have " << armiesInBoard.size() << " armies" << endl;
+	cout << " List of armies: " << endl;
+	for (int i = 0; i < armiesInBoard.size(); i++) {
+
+		// we get the name of each country that the player has an army in
+		cout << armiesInBoard.at(i)->getCountryName() << endl;
+	}
+	cout << endl;
+	cout << endl;
 
 }
 
@@ -447,12 +463,20 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 		// user has cities however, he can decide to iadd new armies to the starting point if he prefers
 		else {
 			cout << " You do have  cities ,However would you like to add armies to the starting point (y/n)" << endl;
-			cin >> answer;
-
+			if (*this->getStatus()) {
+				answer = "y";
+				cout << answer;
+			}
+			else {
+				cin >> answer;
+			}
 			if (answer == "y") {
 				while (!(nb <= armies && nb >= 1)) {
 					cout << "how many armies do you want between 1 and " << armies << endl;
-					cin >> nb;
+					if (*this->getStatus()) {
+						nb = armies;
+					}
+					else { cin >> nb; }
 				}
 				for (int i = 0; i < nb; i++) {
 					// each time that we add an army , we verify that we dont exceed 14
@@ -463,7 +487,7 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 					addArmy(startingPoint);
 					startingPoint->addArmies(color, 1);
 					armies = armies - 1;
-				}			
+				}
 			}
 			nb = 0;
 		}
@@ -490,7 +514,7 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 					cout << "how many armies do you want between 1 and " << armies << endl;
 					cin >> nb;
 				}
-				
+
 
 				for (int j = 0; j < nb; j++) {
 					if (armiesInBoard.size() == 14) {
@@ -502,22 +526,23 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 					armies = armies - 1;
 				}
 
-			}else{
+			}
+			else {
 				cout << "You still have to place " << armies << " armies";
 				cout << endl;
 			}
-			
+
 			nb = 0;
 		}
-		
+
 	}
 
-	
+
 	cout << "For now , theses are the armies you have " << endl << endl;
 
 	for (int i = 0; i < armiesInBoard.size(); i++) {
 
-		armiesInBoard.at(i)->displayInfo();		
+		armiesInBoard.at(i)->displayInfo();
 	}
 	cout << endl;
 
@@ -612,27 +637,30 @@ void Player::moveOverLand(string action)
 
 void Player::buildCity(string action, Country* startingPoint)
 {
-	string color = getColor();	
-	char newCity[100];
+	string color = getColor();
+	string newCity;
 	Country* temp;
 	bool existantCountry = false;
 
 	// we print the countries that we have the armies in.
 	cout << "You have at least one army in theses countries :" << endl;
 	for (int i = 0; i < armiesInBoard.size(); i++) {
-		
-		cout << armiesInBoard.at(i)->getCountryName() << endl<<endl;
-		
+
+		cout << armiesInBoard.at(i)->getCountryName() << endl << endl;
+
 	}
 	
 	while (!existantCountry)
 	{
 		cout << " Where do you want to add a city ( choose a country) " << endl;
-		cin.ignore();
-	 	cin.getline(newCity, 100);
+		if (*this->getStatus()) {newCity = armiesInBoard.at(0)->getCountryName();}
+		else {
+			getline(cin, newCity);
+			getline(cin, newCity);
+		}
 		// we verify in  which  country the player wants to create a city 
 		for (int j = 0; j < armiesInBoard.size(); j++) {
-			if (armiesInBoard.at(j)->getCountryName() == newCity && !existantCountry) {	
+			if (armiesInBoard.at(j)->getCountryName() == newCity && !existantCountry) {
 				addCity(armiesInBoard.at(j));
 				armiesInBoard.at(j)->addCities(color, 1);
 				existantCountry = true;
@@ -660,11 +688,12 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers)
 	string answer;
 	string color = getColor();
 	int sizeArmy;
-	int playerId;	
-	char armyName[100];
+	int playerId;
+	string armyName;
 	string colorDestroy;
 	bool existantCountry = false;
 	vector<Country*> temp;
+	int random = 0;
 	cout << "Here is the list of armies for each player" << endl;
 
 	// print out the list of armies for each player 
@@ -673,7 +702,7 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers)
 		sizeArmy = allPlayers.at(i)->armiesInBoard.size();
 
 		if ((allPlayers.at(i)->getColor()) != (color)) {
-			cout << endl<<endl;
+			cout << endl << endl;
 			cout << " Player " << (i + 1) << endl;
 			cout << " has the following armies" << endl;
 			cout << " and has the following color : " << allPlayers.at(i)->getColor() << endl;
@@ -684,34 +713,49 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers)
 		}
 
 	}
+	if (allPlayers.size() == 1){
+		random = 1;
+	}
+	if (allPlayers.size() > 1){
+		random = rand() % (allPlayers.size())+1;
+	}
 	// user input on which army the player wishes to destroy 
 	cout << "from which player do you which to delete an army " << endl;
-	cin >> playerId;
+	if (*this->getStatus()) {
+		playerId = random;
+		cout << playerId << endl;;
+	}else{ cin >> playerId; }
+	
 	temp = allPlayers.at(playerId - 1)->armiesInBoard;
 
-	colorDestroy = allPlayers.at(playerId-1)->getColor();
+	colorDestroy = allPlayers.at(playerId - 1)->getColor();
 
 	// in this while loop, 
 	// we select the army that we want to delete from the player choosen before, then we make sure to delete from his vector of armies and also from the vector of the country
 	while (!existantCountry)
 	{
 		cout << "which army do you wish to delete " << endl;
-		cin.ignore();
-		cin.getline(armyName, 100);
-			
+		if (*this->getStatus()) {
+			armyName = allPlayers.at(playerId - 1)->armiesInBoard.at(0)->getCountryName();
+			cout << armyName<<endl;
+		}
+		else {
+			getline(cin, armyName);
+			getline(cin, armyName);
 
+		}
 		for (int j = 0; j < armiesInBoard.size(); j++) {
-			
-			if (allPlayers.at(playerId-1)->armiesInBoard.at(j)->getCountryName() == armyName && !existantCountry) {
-				
-				allPlayers.at(playerId-1)->armiesInBoard.at(j)->DestroyArmies(colorDestroy);
+
+			if (allPlayers.at(playerId - 1)->armiesInBoard.at(j)->getCountryName() == armyName && !existantCountry) {
+
+				allPlayers.at(playerId - 1)->armiesInBoard.at(j)->DestroyArmies(colorDestroy);
 				temp.erase(temp.begin() + j);
 				(allPlayers.at(playerId - 1)->armiesInBoard) = temp;
 
 				cout << " You destroyed an army in " << armyName << " for the color " << colorDestroy << endl;
 				existantCountry = true;
 			}
-		}		
+		}
 	}
 	// print out the armies for each player 
 	for (int i = 0; i < allPlayers.size(); i++) {
@@ -724,7 +768,7 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers)
 				allPlayers.at(i)->armiesInBoard.at(j)->displayInfo();
 				cout << endl << endl;
 			}
-			cout << endl << endl << endl<<endl;
+			cout << endl << endl << endl << endl;
 		}
 	}
 }
@@ -734,21 +778,30 @@ bool Player::Ignore() {
 
 	bool decision = false;
 	string choice;
-	
+
 	while (!decision) {
-		cout << " Do you want to ignore this turn ? (Ignore or No) " << endl;
-		cin >> choice;
 
-	if (choice == "No" || choice == "no") {
-		decision = true;
-	}else if (choice == "Ignore" || choice == "ignore") {
-		cout << "You will ignore this turn " << endl;
-		cout << endl;
-		cout << endl;
-		return false;
+
+		if (*this->getStatus()) {
+			choice = this->getUserStrat()->getAction();
+			
+		}
+		else {
+			cout << " Do you want to ignore this turn ? (Ignore or No) " << endl;
+			cin >> choice;
+		}
+
+		if (choice == "No" || choice == "no") {
+			decision = true;
+		}
+		else if (choice == "Ignore" || choice == "ignore") {
+			cout << "You will ignore this turn " << endl;
+			cout << endl;
+			cout << endl;
+			return false;
+		}
+
 	}
-
-}
 
 	return decision;
 
@@ -775,16 +828,16 @@ string Player::AndOrAction(string action, int part) {
 		}
 
 		else {
-			 answerP2 = action.substr(16, action.size()-1);
-			 return answerP2;
+			answerP2 = action.substr(16, action.size() - 1);
+			return answerP2;
 		}
 	}
-	
+
 
 }
 
 
-void Player::makeAction(string actionTook, Country* startingPoint , vector<Player*> AllPlayers ) {
+void Player::makeAction(string actionTook, Country* startingPoint, vector<Player*> AllPlayers) {
 
 	string choice;
 	bool goodSelect = true;
@@ -802,7 +855,15 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 			if (actionTook == "Destroy 1 Army or Build city") {
 				cout << endl;
 				cout << "Do you want to Destroy or Build ? (Destroy/Build)" << endl;
-				cin >> choice;
+
+				if (*this->getStatus()) {
+					choice = "destroy";
+					cout << choice << endl;
+				}
+				else {
+					cin >> choice;
+				}
+
 				cout << endl;
 				cout << endl;
 				if (choice == "Destroy" || choice == "destroy") {
@@ -822,7 +883,14 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 			if (actionTook == "Add 2 Armies or Move 3 Armies" || actionTook == "Add 4 Armies or Move 2 Armies" || actionTook == "Add 3 Armies or Move 4 Armies" || actionTook == "Add 3 Armies or Move 3 Armies") {
 				cout << endl;
 				cout << "Do you want to Add or Move ? (Add/Move)" << endl;
-				cin >> choice;
+
+				if (*this->getStatus()) {
+					choice = "add";
+					cout << choice << endl;
+				}
+				else {
+					cin >> choice;
+				}
 				cout << endl;
 				cout << endl;
 				if (choice == "Add" || choice == "add") {
@@ -835,7 +903,7 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 					moveArmies(actionTook, startingPoint);
 					goodSelect = false;
 				}
-				else if(goodSelect){
+				else if (goodSelect) {
 					cout << " Please write Add or Move" << endl;
 
 				}

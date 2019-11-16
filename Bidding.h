@@ -6,22 +6,24 @@
 
 using namespace std;
 
-class Bidding{
+class Bidding {
 
-	public:
-		Bidding();
-		Bidding(int year,int totalcoin);
-		void runOnce();
-		void bid();
-		int getBidding();
-		int getRun();
-		int getAge();
+public:
+	Bidding();
+	Bidding(int year, int totalcoin);
+	void runOnce(bool& CPU);
+	void bid(bool& CPU);
+	int getBidding();
+	int getRun();
+	int getAge();
+
+
 private:
-		int* biddingCoins ;
-		int* OnlyOnce = 0;
-		int* age;
-		int* playerTotalCoin;
-	
+	int* biddingCoins;
+	int* OnlyOnce = 0;
+	int* age;
+	int* playerTotalCoin;
+
 
 };
 #endif  
