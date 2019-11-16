@@ -254,7 +254,7 @@ void Game::addSupply(int money) {
 	cout <<" Total in the bank : "<< *supplyBank <<" coins"<< endl;
 }
 
-void Game::playerChooseAction(Player* playerTurn) {
+void Game::playerChooseAction(Player* playerTurn,vector<string>* actions) {
 	int action = 0;
 	deck->showHand();
 	while (true) {
@@ -270,10 +270,11 @@ void Game::playerChooseAction(Player* playerTurn) {
 				for (int card = 0; card < deck->getHand().size(); card++) {
 					if (card == (action - 1)) {
 						// player does the action of the card he chose
-						playerTurn->makeAction(deck->getHand()[card]->action , map->getCountryByName(startingGameCountry), allPlayers);
+						playerTurn->makeAction(deck->getHand()[card]->action , map->getCountryByName(startingGameCountry), allPlayers,actions);
 					}
 				}
 				
+				actions->push_back("- Will pay "+ to_string((playerTurn->getHand()->getCostCard(action - 1)))+" coins");
 				playerTurn->getHand()->exchange(action - 1);
 				playerTurn->PayCoin(playerTurn->getHand()->getCostCard(action - 1));
 				addSupply(playerTurn->getHand()->getCostCard(action - 1));
@@ -295,10 +296,18 @@ void Game::startGame() {
 		cout << endl;
 		cout << "Turn : " << (x + 1) << endl;
 		for (int y = 0; y < allPlayers.size(); y++) {
+			vector<string>* actions = new vector<string>();
 			cout << endl;
 			cout << "Player " << *(allPlayers.at(y)->getId())<< endl;
 			allPlayers[y]->displayInfo();
-			playerChooseAction(allPlayers[y]);
+			playerChooseAction(allPlayers[y], actions);
+			setPlayerAction(*(allPlayers.at(y)->getId()), actions);
+			for (int x = 0; x < observers.size(); x++) {
+				observers[x]->display();
+			}
+		}
+		for (int x = 0; x < observers.size(); x++) {
+			observers[x]->reset();
 		}
 	}
 }
@@ -345,5 +354,21 @@ void Game::computeScoreG()
 	cout << endl;
 	cout << endl;
 	cout << "The winner of the game is Player [" << playerdom << "] with a crashing score of: " << scoredom;
+
+}
+
+void Game::addSubscriber(Phase* observerPhase) {
+	observers.push_back(observerPhase);
+}
+
+void Game::notify() {
+	for (int x = 0; x < observers.size(); x++) {
+		observers[x]->notify(playerTurn, actionsOfPLayer);
+	}
+}
+void Game::setPlayerAction(int playerTurn, vector<string>* actions) {
+	this->playerTurn = playerTurn;
+	actionsOfPLayer = actions;
+	notify();
 
 }

@@ -5,9 +5,10 @@
 #include "Bidding.h"
 #include "Player.h"
 #include "Game.h"
+#include "GameObservers.h"
 
 using namespace std;
-/*
+
 int main() {
 
 	//Initialize the map
@@ -17,6 +18,10 @@ int main() {
 	//Create the Game
 	Game* game = new Game();
 	game->setMap(mapLoader->getMap());
+
+	Phase* phase = new Phase();
+
+	game->addSubscriber(phase);
 
 	//Create Deck and Shuffle
 	game->createDeck();
@@ -37,4 +42,3 @@ int main() {
 	game->displayCountry();
 	game->computeScoreG();
 }
-*/

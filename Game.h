@@ -1,6 +1,7 @@
 #pragma once
 #include "MapLoader.h"
 #include "Player.h"
+#include "GameObservers.h"
 
 class Game{
 private:
@@ -11,6 +12,10 @@ private:
 	int* supplyBank;
 	string startingGameCountry;
 	const vector<string> allColors = { "red", "blue", "yellow", "green", "white" };
+
+	vector<Phase*> observers;
+	vector<string>* actionsOfPLayer;
+	int playerTurn;
 
 public:
 	Game();
@@ -26,7 +31,11 @@ public:
 	void setStartingGameCountry();
 	void displayCountry();
 	void startGame();
-	void playerChooseAction(Player* playerTurn);
+	void playerChooseAction(Player* playerTurn,vector<string>*);
+
+	void addSubscriber(Phase* observer);
+	void notify();
+	void setPlayerAction(int player, vector<string>* actions);
 	
 
 	bool notAlreadyUsed(vector<string> colorUsed, string color);

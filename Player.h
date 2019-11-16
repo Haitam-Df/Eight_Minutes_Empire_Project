@@ -35,9 +35,9 @@ public:
 	//	void moveOverLand(string action);
 	void buildCity(string action, Country* startingPoint);
 	void destroyArmy(string action, vector<Player*> allPlayers);
-	bool Ignore();
+	bool Ignore(vector<string>* actions);
 	string AndOrAction(string action, int part);
-	void makeAction(string actionTook, Country* startingPoint, vector<Player*> AllPlayers);
+	void makeAction(string actionTook, Country* startingPoint, vector<Player*> AllPlayers,vector<string>* actions);
 	void addOwnCountry(string name,Country* countries);
 	void PayCoin(int cost);
 	void setColor(string color);

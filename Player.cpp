@@ -730,7 +730,7 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers)
 }
 
 // with this nethod , the user will be able to pick a card , keep it in his hand and skip his turn
-bool Player::Ignore() {
+bool Player::Ignore(vector<string>* actions) {
 
 	bool decision = false;
 	string choice;
@@ -742,6 +742,7 @@ bool Player::Ignore() {
 	if (choice == "No" || choice == "no") {
 		decision = true;
 	}else if (choice == "Ignore" || choice == "ignore") {
+		actions->push_back("- Chose to Ignore ");
 		cout << "You will ignore this turn " << endl;
 		cout << endl;
 		cout << endl;
@@ -784,14 +785,14 @@ string Player::AndOrAction(string action, int part) {
 }
 
 
-void Player::makeAction(string actionTook, Country* startingPoint , vector<Player*> AllPlayers ) {
+void Player::makeAction(string actionTook, Country* startingPoint , vector<Player*> AllPlayers, vector<string>* actions) {
 
 	string choice;
 	bool goodSelect = true;
-
+	actions->push_back("- " + actionTook);
 	while (goodSelect) {
 		choice;
-		if (Ignore()) {
+		if (Ignore(actions)) {
 			// ----------------------ADD ARMIES-------------------------
 			if (actionTook == "Add 1 Army" || actionTook == "Add 3 Armies" || actionTook == "Add 3 Armies" || actionTook == "Add 2 Armies") {
 				placeNewArmies(actionTook, startingPoint);
@@ -806,10 +807,12 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 				cout << endl;
 				cout << endl;
 				if (choice == "Destroy" || choice == "destroy") {
+					actions->push_back("- Chose to Destroy");
 					destroyArmy(actionTook, AllPlayers);
 					goodSelect = false;
 				}
 				if (choice == "Build" || choice == "build") {
+					actions->push_back("- Chose to Build");
 					buildCity(actionTook, startingPoint);
 					goodSelect = false;
 				}
@@ -826,11 +829,13 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 				cout << endl;
 				cout << endl;
 				if (choice == "Add" || choice == "add") {
+					actions->push_back("- Chose to Add armies");
 					actionTook = AndOrAction(actionTook, 1);
 					placeNewArmies(actionTook, startingPoint);
 					goodSelect = false;
 				}
 				if (choice == "Move" || choice == "move") {
+					actions->push_back("- Chose to Move armies");
 					actionTook = AndOrAction(actionTook, 2);
 					moveArmies(actionTook, startingPoint);
 					goodSelect = false;
