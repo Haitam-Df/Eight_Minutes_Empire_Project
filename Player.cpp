@@ -796,6 +796,7 @@ bool Player::Ignore(vector<string>* actions) {
 		}
 		else if (choice == "Ignore" || choice == "ignore") {
 			cout << "You will ignore this turn " << endl;
+			actions->push_back("- Chose to ignore this turn");
 			cout << endl;
 			cout << endl;
 			return false;
