@@ -5,12 +5,13 @@
 #include<queue>
 #include "Player.h"
 #include <cstdlib>
+#include "GameObservers.h"
 
 using namespace std;
 
 class Country;
 class Player;
-
+class View;
 
 
 class Continent {
@@ -26,6 +27,7 @@ public:
 	bool isConnectedContinent();
 	bool recursiveCheckTree(unordered_map<string, int> arrOfEdgeCountry, queue<Country*> queueOfCountry);
 	int computeScoreC(string colorP);
+	string setOwnedColor();
 
 
 private:
@@ -35,7 +37,7 @@ private:
 
 class Country {
 public:
-	Country(string name);
+	Country(string name,View* observer);
 	~Country();
 	void addEdgeCountry(string name, Country* country);
 	void setContinentName(string name);
@@ -49,10 +51,11 @@ public:
 	void addArmies(string color, int nbOfArmies);
 	void addCities(string color, int nbOfCities);
 	void DestroyArmies(string color);
-	void setOwnedColor();
+	string setOwnedColor();
 	int computeScoreR(string playerColor);
 	string getOwnerColor();
 	bool hasOwner();
+
 
 private:
 	unordered_map<string, Country*> edgeCountry;
@@ -61,6 +64,7 @@ private:
 	string ownerColor;
 	unordered_map<string, int*> armies;
 	unordered_map<string, int*> cities;
+	View* observer;
 };
 
 class Map {
@@ -92,6 +96,9 @@ public:
 	string getRandomCountry();
 	Country* getCountryByName(string countryName);
 	unordered_map<string, Continent*> getAllContinent();
+	void setObserverView();
+	View* getObserverView();
+	unordered_map<string, Country*> getAllCountry();
 
 
 
@@ -100,5 +107,7 @@ private:
 	~Map();
 	unordered_map<string, Country*> allCountry;
 	unordered_map<string, Continent*> allContinent;
+	View* observer;
 	static Map* m_instance;
+	
 };

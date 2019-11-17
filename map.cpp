@@ -4,6 +4,7 @@
 #include<string>
 #include "map.h"
 #include <cstdlib>
+#include "GameObservers.h"
 using namespace std;
 
 //Continent implementation
@@ -99,23 +100,22 @@ bool Continent::isConnectedContinent() {
 	}
 }
 
-int Continent::computeScoreC(string colorP)
-{
+string Continent::setOwnedColor() {
 	int red = 0;
 	int blue = 0;
 	int yellow = 0;
 	int green = 0;
 	int white = 0;
-	int colorArr[] = { red,blue,yellow,green ,white};
+	int colorArr[] = { red,blue,yellow,green ,white };
 	int domColorn = 0;
 	string domColor = "NONE";
 	unordered_map<string, Country*> ownedCountries;
-	
+
 	// initialize the array of countries being owned (having armies on it with no repetions)
 	for (std::pair<std::string, Country*> element : subCountry)
 	{
 		bool check = false;
-		for (std::pair<std::string, Country*> element2 : ownedCountries) 
+		for (std::pair<std::string, Country*> element2 : ownedCountries)
 		{
 			if (element.first == element2.first)
 			{
@@ -126,7 +126,7 @@ int Continent::computeScoreC(string colorP)
 		if (check)
 		{
 		}
-		else 
+		else
 		{
 			if (element.second->hasOwner()) {
 				ownedCountries[element.first] = element.second;
@@ -135,11 +135,11 @@ int Continent::computeScoreC(string colorP)
 	}
 
 	// Sums up the number of countries owned for each Player color
-	for (std::pair<std::string, Country*> element : ownedCountries) 
+	for (std::pair<std::string, Country*> element : ownedCountries)
 	{
-		element.second->setOwnedColor();
+		string owner = element.second->setOwnedColor();
 
-		if (element.second->getOwnerColor() == "red") 
+		if (element.second->getOwnerColor() == "red")
 		{
 			colorArr[0]++;
 		}
@@ -151,11 +151,11 @@ int Continent::computeScoreC(string colorP)
 		{
 			colorArr[2]++;
 		}
-		else if(element.second->getOwnerColor() == "green")
+		else if (element.second->getOwnerColor() == "green")
 		{
 			colorArr[3]++;
 		}
-		else if (element.second->getOwnerColor() == "white") 
+		else if (element.second->getOwnerColor() == "white")
 		{
 			colorArr[4]++;
 		}
@@ -170,24 +170,30 @@ int Continent::computeScoreC(string colorP)
 			switch (i)
 			{
 			case 0:
-				domColor = "red"; 
+				domColor = "red";
 				break;
 			case 1:
-				domColor = "blue"; 
+				domColor = "blue";
 				break;
 			case 2:
-				domColor = "yellow"; 
+				domColor = "yellow";
 				break;
 			case 3:
-				domColor = "green"; 
+				domColor = "green";
 				break;
 			case 4:
-				domColor = "white"; 
+				domColor = "white";
 				break;
 			}
 		}
 	}
-	if (colorP == domColor) {
+	return domColor;
+}
+
+int Continent::computeScoreC(string colorP)
+{
+	string ownedcolor = setOwnedColor();
+	if (colorP == ownedcolor) {
 		return 1;
 	}
 	else {
@@ -199,7 +205,7 @@ int Continent::computeScoreC(string colorP)
 
 
 //Country implementation
-Country::Country(string name) {
+Country::Country(string name,View* observer) {
 	countryName = name;
 	continentName = "";
 	unordered_map<string, Country*> edgeCountry;
@@ -214,6 +220,7 @@ Country::Country(string name) {
 	cities["green"] = new int(0);
 	cities["yellow"] = new int(0);
 	cities["white"] = new int(0);
+	this->observer = observer;
 }
 Country::~Country() { 
 
@@ -246,7 +253,7 @@ bool Country::hasOwner() {
 	return 0;
 }
 
-void Country::setOwnedColor() {
+string Country::setOwnedColor() {
 	string colorDom = "";
 	int armyDom = 0;
 
@@ -258,19 +265,20 @@ void Country::setOwnedColor() {
 		}
 	}
 	ownerColor = colorDom;
-
-	cout << endl;
-	cout << countryName << " IS OWNED BY : " << ownerColor;
+	return colorDom;
 }
 
 void Country::addArmies(string color, int nbOfArmies) {
 	*armies[color] += nbOfArmies;
+	observer->notify(getCountryName(), setOwnedColor());
 }
 void Country::addCities(string color, int nbOfCities) {
 	*cities[color] += nbOfCities;
+
 }
 void Country::DestroyArmies(string color) {
 	*armies[color] -= 1;
+	observer->notify(getCountryName(), setOwnedColor());
 }
 
 void Country::displayInfo() {
@@ -313,7 +321,7 @@ int Country::getEdgeCountrySize() {
 int Country::computeScoreR(string colorP)
 {
 	
-	setOwnedColor();
+	string owner =setOwnedColor();
 
 	return (ownerColor == colorP);
 
@@ -461,7 +469,7 @@ void Map::deleteMap() {
 
 bool Map::createCountry(string countryName) {
 	if (!isCountryExist(countryName)) {
-		Country* country = new Country(countryName);
+		Country* country = new Country(countryName,observer);
 		allCountry[countryName] = country;
 		cout << "" << endl;
 		cout << "Captain ! , This Country (" + countryName + ") is now created!" << endl;
@@ -792,6 +800,15 @@ void Map::askBuildMapQuestion() {
 			break;
 		}
 		}
+	}
+	void Map::setObserverView() {
+		this->observer = new View();
+	}
+	View* Map::getObserverView() {
+		return this->observer;
+	}
+	unordered_map<string,Country*> Map::getAllCountry() {
+		return allCountry;
 	}
 
 

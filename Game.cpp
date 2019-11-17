@@ -403,6 +403,7 @@ void Game::startGame() {
 				observers[x]->display();
 			}
 		}
+		viewObserver->displayStats();
 		for (int x = 0; x < observers.size(); x++) {
 			observers[x]->reset();
 		}
@@ -414,16 +415,18 @@ void Game::computeScoreG()
 
 	int scoredom = 0;
 	int playerdom = 0;
+	int windom = 0;
 
 	//Compute the score for each player and sets the winner of the game
 	for (int i = 0; i < allPlayers.size(); i++)
 	{
 		int computeScore = allPlayers[i]->computeScoreP(map->getAllContinent());
+		viewObserver->notifyPlayerPoints(*allPlayers[i]->getId(), computeScore);
 		if (computeScore > scoredom)
 		{
 			scoredom = computeScore;
 			playerdom = (i + 1);
-
+			windom = *allPlayers[i]->getId();
 		}
 		else 
 		{	
@@ -432,25 +435,26 @@ void Game::computeScoreG()
 			{
 				scoredom = computeScore;
 				playerdom = (i + 1);
+				windom = *allPlayers[i]->getId();
 			}
 			// if score is tied: check if player has more armies on board than dominant player
 			else if (computeScore == scoredom && allPlayers[i]->numArmiesOnBoard > allPlayers[playerdom]->numArmiesOnBoard)
 			{
 				scoredom = computeScore;
 				playerdom = (i + 1);
+				windom = *allPlayers[i]->getId();
 			}
 			// if score is tied: check if player has more country owned than dominant player
 			else if (computeScore == scoredom && allPlayers[i]->controlledRegions > allPlayers[playerdom]->controlledRegions)
 			{
 				scoredom = computeScore;
 				playerdom = (i + 1);
+				windom = *allPlayers[i]->getId();
 			}
 		}
 	}
-
-	cout << endl;
-	cout << endl;
-	cout << "The winner of the game is Player [" << playerdom << "] with a crashing score of: " << scoredom;
+	viewObserver->notifyWinner(windom);
+	viewObserver->displayWin();
 
 }
 
@@ -468,4 +472,10 @@ void Game::setPlayerAction(int playerTurn, vector<string>* actions) {
 	actionsOfPLayer = actions;
 	notify();
 
+}
+void Game::setObserver() {
+	viewObserver = map->getObserverView();
+	viewObserver->setallContinent(map->getAllContinent());
+	viewObserver->setAllPlayers(allPlayers);
+	viewObserver->setallCountry(map->getAllCountry());
 }

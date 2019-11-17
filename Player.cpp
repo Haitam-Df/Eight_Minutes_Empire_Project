@@ -208,9 +208,17 @@ void Player::PayCoin(int cost) {
 void Player::displayInfo() {
 	cout << endl;
 	cout << endl;
-	cout << *getId() << " [PLAYER]" << endl;
-	cout << *getCoins() << " [COINS]" << endl;
-	cout << *coins << endl;
+	cout  << "[PLAYER] " << *getId() << endl;
+	cout  << "[COINS] " << *getCoins() << endl;
+	cout << "[COLOR] :" << getColor() << endl;
+	cout << "[ARMIES ON MAP] " << endl;
+	for (int x = 0; x < armiesInBoard.size(); x++) {
+		cout << "  - "<<armiesInBoard[x]->getCountryName() << endl;
+	}
+	cout << "[CITIES ON MAP] " << endl;
+	for (int x = 0; x < citiesInBoard.size(); x++) {
+		cout << "  - " << citiesInBoard[x]->getCountryName() << endl;
+	}
 
 }
 
@@ -336,7 +344,7 @@ void Player::moveArmies(string action, Country* startingPoint) {
 			if (move > 1) {
 				cout << "To which country do you want to move an army ?" << endl;
 				getline(cin, answer);
-
+				getline(cin, answer);
 				move -= 1;
 			}
 

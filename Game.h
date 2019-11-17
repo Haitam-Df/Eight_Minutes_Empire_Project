@@ -16,6 +16,7 @@ private:
 	vector<Phase*> observers;
 	vector<string>* actionsOfPLayer;
 	int playerTurn;
+	View* viewObserver;
 
 public:
 	Game();
@@ -41,6 +42,7 @@ public:
 	bool notAlreadyUsed(vector<string> colorUsed, string color);
 	bool verifyColor(vector<string> colorUsed, string colorChoose, int nbOfPlayer);
 	void computeScoreG();	
+	void setObserver();
 
 	int nbOfCoin(int nbOfPlayer);
 	int nbOfTurn(int nbOfPlayer);

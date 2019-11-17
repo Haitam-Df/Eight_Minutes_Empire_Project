@@ -230,6 +230,7 @@ int MapLoader::loadMap() {
 		if (!file.fail()) {
 			Map* map = Map::getInstance();
 			setMap(map);
+			map->setObserverView();
 			if (isValidMap(file)) {
 				return 1;
 			}

@@ -18,11 +18,15 @@ int main() {
 	Game* game = new Game();
 	game->setMap(mapLoader->getMap());
 
+	Phase* phase = new Phase();
+
+	game->addSubscriber(phase);
+
 	//Create Deck and Shuffle
 	game->createDeck();
 
 	game->loadPlayer();
-
+	game->setObserver();
 	game->setStartingGameCountry();
 
 	game->if2Players();
@@ -36,5 +40,4 @@ int main() {
 	game->startGame();
 	game->displayCountry();
 	game->computeScoreG();
-}
-*/
+}*/
