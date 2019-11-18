@@ -43,4 +43,5 @@ int main() {
 
 	game->startGame();
 	game->computeScoreG();
+	game->destroyGame();
 }*/

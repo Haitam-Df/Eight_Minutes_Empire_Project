@@ -7,6 +7,7 @@ using namespace std;
 class Cards {
 public:
 	Cards(string action, string good);
+	~Cards();
 	string good;
 	string action;
 
@@ -21,6 +22,7 @@ private:
 public:
 	Deck();
 	void draw();
+	void eraseDeck();
 	void removeCard(int position);
 	void showHand();
 

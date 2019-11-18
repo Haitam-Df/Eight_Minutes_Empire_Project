@@ -16,14 +16,14 @@ public:
 	int play(vector<Cards*> gameDeck);
 	string getAction();
 	void setAction(string newAction);
-	void changeStrat();
+	bool changeStrat();
 	PlayerStrategies(int strat);
 	int* getStrategy();
 	void setStrategy(int strat);
 	bool getChangeStrat();
 	void setChangeStrat(bool change);
 	PlayerStrategies();
-
+	~PlayerStrategies();
 private:
 	int* strategy;
 	string plays;

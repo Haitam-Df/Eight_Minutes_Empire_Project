@@ -17,6 +17,7 @@ public :
 	Map* getMap();
 	void showMap();//
 	int loadMap();
+	void unloadMap();
 private:
 	Map * map;
 };

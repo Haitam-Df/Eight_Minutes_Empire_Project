@@ -319,8 +319,19 @@ void Game::playerChooseAction(Player* playerTurn,vector<string>* actions) {
 	while (true) {
 		cout << endl;
 
-		playerTurn->getUserStrat()->changeStrat();
+		if (!playerTurn->getUserStrat()->getChangeStrat()) {
 
+			if (*playerTurn->getStatus() == false && playerTurn->getUserStrat()->changeStrat() == true) {
+				if (!playerTurn->getUserStrat()->getChangeStrat())
+				playerTurn->setStatus(true);
+
+			}
+			else if (*playerTurn->getStatus() == true && playerTurn->getUserStrat()->changeStrat() == false) {
+				if (!playerTurn->getUserStrat()->getChangeStrat())
+				playerTurn->setStatus(false);
+
+			}
+		}
 		if(*playerTurn->getUserStrat()->getStrategy() == 0){ 
 		
 		cout << "Which action you want to perform?" << endl;
@@ -384,6 +395,33 @@ void Game::playerChooseAction(Player* playerTurn,vector<string>* actions) {
 	}
 	
 
+}
+
+void Game::destroyGame()
+{
+	cout << " Currently deleting all instances of the game !" << endl;
+	for (int i = 0; i < allPlayers.size(); i++) {
+		delete allPlayers.at(i)->getCoins();
+		delete allPlayers.at(i)->getStatus();
+		delete allPlayers.at(i)->getId();
+		delete allPlayers.at(i)->getUserStrat();
+		delete allPlayers.at(i)->getBiddingInstance();
+		delete allPlayers.at(i)->getHand();
+		delete allPlayers.at(i);
+
+	}
+	maploader->unloadMap();
+	delete deck;
+	delete maploader;
+	observers.clear();
+	actionsOfPLayer = NULL;
+	delete actionsOfPLayer;
+	delete viewObserver;
+	deck->eraseDeck();
+
+
+
+	cout << " Done!" << endl;
 }
 
 void Game::startGame() {

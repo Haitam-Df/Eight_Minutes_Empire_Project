@@ -11,6 +11,10 @@ Cards::Cards(string newAction, string newGood) {
 	action = newAction;
 }
 
+Cards::~Cards()
+{
+}
+
 // deck class that will initiate the 42 cards from the game
 Deck::Deck() {
 
@@ -145,6 +149,19 @@ void Deck::draw() {
 		deckOfCard.erase(deckOfCard.begin());
 		hand.push_back(temp);
 	}
+}
+
+void Deck::eraseDeck(){
+	
+	for (int i = 0; i < this->deckOfCard.size(); i++) {
+
+		delete deckOfCard.at(i);
+
+	}
+	if(deckOfCard.size()!=0)
+	deckOfCard.clear();
+	
+
 }
 
 // return the hand vector 

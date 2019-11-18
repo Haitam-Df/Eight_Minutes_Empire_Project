@@ -34,6 +34,12 @@ PlayerStrategies* Player::getUserStrat() {
 	return userStrategy;
 }
 
+void Player::setStatus(bool change)
+{
+	delete isCPU;
+	isCPU = new bool(change);
+}
+
 void Player::setColor(string color) {
 	colorArmy = color;
 }
@@ -248,14 +254,15 @@ void Player::moveArmies(string action, Country* startingPoint) {
 	string color = getColor();
 	int move;
 	int current = 0;
-	string answer;
+	int answer;
+	int debut;
 	string start;
 	string userAnswer;
 	bool real = false;
 	unordered_map<string, Country*> temp;
 	unordered_map<string, Country*> tempStart;
-	 
-
+	vector<Country*> currentEdge;
+	int j;
 	string tmp;
 	stringstream ss(action);
 	ss >> tmp >> move;
@@ -265,34 +272,29 @@ void Player::moveArmies(string action, Country* startingPoint) {
 	for (int i = 0; i < armiesInBoard.size(); i++) {
 
 		// we get the name of each country that the player has an army in
-		cout << armiesInBoard.at(i)->getCountryName() << endl;
+		cout <<(i+1)<<")"<< armiesInBoard.at(i)->getCountryName() << endl;
 	}
 	cout << endl;
 
-	cout << "Please select the starting country to move an army" << endl;
+	cout << "Please select the starting country to move an army (write the number)" << endl;
+	cin >> answer;
 
-	getline(cin, answer);
-	getline(cin, answer);
-	cout << endl;
-	cout << endl;
-	start = answer;   // we want to keep the first country in a string because we are going to delete the army from there and move it to the new location
 
-	for (int i = 0; i < armiesInBoard.size(); i++) {
+	start = armiesInBoard.at(answer-1)->getCountryName();   // we want to keep the first country in a string because we are going to delete the army from there and move it to the new location
+	debut = answer - 1;   // we also keep the location of the starting point to remove it after
 
-		if (armiesInBoard.at(i)->getCountryName() == answer) {            // we also keep the location of the starting point to remove it after
-			current = i;
-		}
-	}
 
-	cout << "here is the list of country related to " << armiesInBoard.at(current)->getCountryName() << endl;
+	cout << "here is the list of country related to " << armiesInBoard.at(answer-1)->getCountryName() << endl;
 
-	temp = armiesInBoard.at(current)->getEdgeCountry();
+	temp = armiesInBoard.at(answer - 1)->getEdgeCountry();
 	tempStart = temp;
+	currentEdge.clear();
 	cout << " List of edge countries : " << endl;               // this will print the edge countries of the chosen one
-
+	j = 1;
 	for (auto it = temp.begin(); it != temp.end(); ++it) {
-		cout << " " << it->first << endl;
-
+		currentEdge.push_back(it->second);
+		cout <<j<<") " << it->first << endl;
+		j++;
 	}
 
 	do {
@@ -301,10 +303,8 @@ void Player::moveArmies(string action, Country* startingPoint) {
 			userAnswer = "move";
 			cout << endl;
 			cout << endl;
-			cout << "Select a country to move the army" << endl;
-			getline(cin, answer);
-			getline(cin, answer);
-
+			cout << "Select a country to move the army (write the number) " << endl;
+			cin >> answer;
 			move -= 1;
 		}
 
@@ -319,18 +319,21 @@ void Player::moveArmies(string action, Country* startingPoint) {
 
 		if (userAnswer == "explore") {
 			move -= 1;
-			cout << "Which Country do you want to explore?" << endl;
-			getline(cin, answer);
-			getline(cin, answer);
+			cout << "Which Country do you want to explore? (write the number)" << endl;
+			cin >> answer;
 			cout << endl;
 			cout << endl;
+			
+			temp = temp.at(currentEdge.at(answer - 1)->getCountryName())->getEdgeCountry();            // we get the new unordered map of edge countries to print it
 
-			temp = temp.at(answer)->getEdgeCountry();            // we get the new unordered map of edge countries to print it
+			cout << " List of edge countries of "<< currentEdge.at(answer - 1)->getCountryName() <<": " << endl;
+			currentEdge.clear();
 
-			cout << " List of edge countries : " << endl;
-
+			j = 1;
 			for (auto it = temp.begin(); it != temp.end(); ++it) {
-				cout << " " << it->first << endl;
+				currentEdge.push_back(it->second);
+				cout << j << ") " << it->first << endl;
+				j++;
 			}
 
 			if (move == 0) {
@@ -342,9 +345,8 @@ void Player::moveArmies(string action, Country* startingPoint) {
 		else if (userAnswer == "move") {
 
 			if (move > 1) {
-				cout << "To which country do you want to move an army ?" << endl;
-				getline(cin, answer);
-				getline(cin, answer);
+				cout << "To which country do you want to move an army  (write the number)?" << endl;
+				cin >> answer;
 				move -= 1;
 			}
 
@@ -354,45 +356,41 @@ void Player::moveArmies(string action, Country* startingPoint) {
 				if (armiesInBoard.at(i)->getCountryName() == start) {      // we kept the starting country so we can remove it from both arrays
 					armiesInBoard.at(i)->DestroyArmies(color);
 					armiesInBoard.erase(armiesInBoard.begin() + i);
-					addArmy(temp.at(answer));                         // at the same time we can the new army in ArmyInBoard
+					addArmy(currentEdge.at(answer-1));                         // at the same time we can the new army in ArmyInBoard
 					break;
 				}
 			}
 
-			temp.at(answer)->addArmies(color, 1);               // add an army to the vector of that Country
-
+			temp.at(currentEdge.at(answer - 1)->getCountryName())->addArmies(color, 1);               // add an army to the vector of that Country
+			currentEdge.clear();
 
 			if (move != 0) {                // same as the one before , we select which army we want to move , etc
 				cout << " You have an army in these countries :" << endl;
 				for (int i = 0; i < armiesInBoard.size(); i++) {
 
 
-					cout << armiesInBoard.at(i)->getCountryName() << endl;
+					cout <<(i+1)<<") "<<armiesInBoard.at(i)->getCountryName() << endl;
 				}
 
-				cout << "Please select the starting country to move an army" << endl;
-				getline(cin, answer);
-				getline(cin, answer);
+				cout << "Please select the starting country to move an army  (write the number)" << endl;
+				cin >> answer;
 				cout << endl;
 				cout << endl;
-				start = answer;
 
-				for (int i = 0; i < armiesInBoard.size(); i++) {
+				start = armiesInBoard.at(answer - 1)->getCountryName(); 
+				debut = answer - 1; 
 
-					if (armiesInBoard.at(i)->getCountryName() == answer) {
-						current = i;
-					}
-				}
 
-				cout << "here is the list of country related to " << armiesInBoard.at(current)->getCountryName() << endl;
+				cout << "here is the list of country related to " << armiesInBoard.at(answer-1)->getCountryName() << endl;
 
-				temp = armiesInBoard.at(current)->getEdgeCountry();
+				temp = armiesInBoard.at(answer - 1)->getEdgeCountry();
 				tempStart = temp;
 				cout << " List of edge countries : " << endl;
-
+				j = 1;
 				for (auto it = temp.begin(); it != temp.end(); ++it) {
-					cout << " " << it->first << endl;
-
+					currentEdge.push_back(it->second);
+					cout << j << ") " << it->first << endl;
+					j++;
 				}
 
 			}

@@ -60,7 +60,7 @@ public:
 	int* getCoins();
 	Bidding* getBiddingInstance();
 	PlayerStrategies* getUserStrat();
-
+	void setStatus(bool change);
 
 
 };

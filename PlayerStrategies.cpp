@@ -16,12 +16,18 @@ PlayerStrategies::PlayerStrategies()
 {
 }
 
+PlayerStrategies::~PlayerStrategies()
+{
+}
+
 int* PlayerStrategies::getStrategy() {
 	return strategy;
 }
 void PlayerStrategies::setStrategy(int strat) {
 
-	strategy = &strat;
+	delete strategy;
+	strategy = new int(strat);
+	
 
 }
 
@@ -35,14 +41,15 @@ void PlayerStrategies::setChangeStrat(bool change) {
 
 int PlayerStrategies::play(vector<Cards*> gameHand) {
 
-	int* action = this->strategy;
+	int* action = this->getStrategy();
+
 	if (*action == 0) {
 		return HumanPlayer(gameHand);
 	}
-	else if (*action == 1) {
+	else if (*action == (1)) {
 		return GreedyCPU(gameHand);
 	}
-	else if (*action == 2) {
+	else if (*action == (2)) {
 		return ModerateCPU(gameHand);
 	}
 	return  1;
@@ -55,14 +62,14 @@ string PlayerStrategies::getAction()
 void PlayerStrategies::setAction(string newAction)
 {
 	plays = newAction;
-	
+
 }
-void PlayerStrategies::changeStrat() {
+bool PlayerStrategies::changeStrat() {
 
 	string answer;
 	int changeStrat;
 	if (getChangeStrat()) {
-
+		return NULL;
 	}
 	else {
 
@@ -78,21 +85,29 @@ void PlayerStrategies::changeStrat() {
 
 				while (true) {
 					cin >> changeStrat;
-					if (changeStrat == 1 || changeStrat == 2 || changeStrat == 3) {
+					if (changeStrat == 1) {
 						setStrategy(changeStrat - 1);
+						return false;
+						break;
+					}
+					if (changeStrat == 2 || changeStrat == 3) {
+						setStrategy(changeStrat - 1);
+						return true;
 						break;
 					}
 				}
 				break;
 			}
 
-			if (answer == "n") { break; }
-			if (answer == "NO") { setChangeStrat(true); break; }
+			if (answer == "n") { return NULL; break; }
+			if (answer == "NO") { setChangeStrat(true); return NULL;  break; }
 		}
 
 	}
+	return NULL;
 
 }
+
 int PlayerStrategies::HumanPlayer(vector<Cards*> gameHand)
 {
 	int  action;

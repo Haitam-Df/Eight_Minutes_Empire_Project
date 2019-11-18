@@ -245,3 +245,7 @@ int MapLoader::loadMap() {
 		
 	}
 }
+
+void MapLoader::unloadMap() {
+	Map::releaseInstance();	
+}

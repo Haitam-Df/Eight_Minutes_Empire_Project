@@ -33,7 +33,7 @@ public:
 	void displayCountry();
 	void startGame();
 	void playerChooseAction(Player* playerTurn,vector<string>*);
-
+	void destroyGame();
 	void addSubscriber(Phase* observer);
 	void notify();
 	void setPlayerAction(int player, vector<string>* actions);

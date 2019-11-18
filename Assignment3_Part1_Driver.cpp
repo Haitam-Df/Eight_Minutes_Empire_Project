@@ -7,7 +7,7 @@
 #include "Game.h"
 
 using namespace std;
-/*
+
 int main() {
 
 	//Initialize the map
@@ -40,4 +40,5 @@ int main() {
 	game->startGame();
 	game->displayCountry();
 	game->computeScoreG();
-}*/
+	game->destroyGame();
+}
