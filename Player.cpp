@@ -758,8 +758,9 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers)
 				temp.erase(temp.begin() + j);
 				(allPlayers.at(playerId - 1)->armiesInBoard) = temp;
 
-				cout << " You destroyed an army in " << armyName << " for the color " << colorDestroy << endl;
+				cout << " You destroyed an army in " << armyName << " for the color " << colorDestroy << endl;				
 				existantCountry = true;
+				break;
 			}
 		}
 	}
