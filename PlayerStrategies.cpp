@@ -65,46 +65,47 @@ void PlayerStrategies::setAction(string newAction)
 
 }
 bool PlayerStrategies::changeStrat() {
+	
+		string answer;
+		int changeStrat;
+		if (getChangeStrat()) {
+			return NULL;
+		}
+		else {
 
-	string answer;
-	int changeStrat;
-	if (getChangeStrat()) {
-		return NULL;
-	}
-	else {
+			cout << "Do you want to change strategies before the next turn (y or n) ? ( Write NO to never be bothered again)" << endl;
+			while (true) {
+				cin >> answer;
+				if (answer == "y") {
 
-		cout << "Do you want to change strategies before the next turn (y or n) ? ( Write NO to never be bothered again)" << endl;
-		while (true) {
-			cin >> answer;
-			if (answer == "y") {
+					cout << " Which Strategy do you want for this player to adopt?" << endl;
+					cout << "1) Human Player" << endl;
+					cout << "2) Greedy Player" << endl;
+					cout << "3) Moderate Player" << endl;
 
-				cout << " Which Strategy do you want for this player to adopt?" << endl;
-				cout << "1) Human Player" << endl;
-				cout << "2) Greedy Player" << endl;
-				cout << "3) Moderate Player" << endl;
-
-				while (true) {
-					cin >> changeStrat;
-					if (changeStrat == 1) {
-						setStrategy(changeStrat - 1);
-						return false;
-						break;
+					while (true) {
+						cin >> changeStrat;
+						if (changeStrat == 1) {
+							setStrategy(changeStrat - 1);
+							return false;
+							break;
+						}
+						if (changeStrat == 2 || changeStrat == 3) {
+							setStrategy(changeStrat - 1);
+							return true;
+							break;
+						}
 					}
-					if (changeStrat == 2 || changeStrat == 3) {
-						setStrategy(changeStrat - 1);
-						return true;
-						break;
-					}
+					break;
 				}
-				break;
+
+				if (answer == "n") { setChangeStrat(false); return NULL; break; }
+				if (answer == "NO") { setChangeStrat(true); return NULL;  break; }
+				cout << "Do you want to change strategies before the next turn (y or n) ? ( Write NO to never be bothered again)" << endl;
 			}
 
-			if (answer == "n") { return NULL; break; }
-			if (answer == "NO") { setChangeStrat(true); return NULL;  break; }
 		}
 
-	}
-	return NULL;
 
 }
 
