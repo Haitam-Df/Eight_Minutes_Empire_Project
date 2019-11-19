@@ -12,6 +12,39 @@ Game::Game() {
 	supplyBank = new int(0);
 }
 
+Game::~Game() {
+
+	cout << " Currently deleting all instances of the game !" << endl;
+
+	for (int i = 0; i < allPlayers.size(); i++) {
+		*allPlayers.at(i)->getCoins() = NULL;
+		delete allPlayers.at(i)->getCoins();
+		*allPlayers.at(i)->getId() = NULL;
+		delete allPlayers.at(i)->getId();
+		*allPlayers.at(i)->getUserStrat() = NULL;
+		delete allPlayers.at(i)->getUserStrat();
+		delete allPlayers.at(i)->getBiddingInstance();
+		*allPlayers.at(i)->getHand() = NULL;
+		delete allPlayers.at(i)->getHand();
+		delete allPlayers.at(i);
+
+	}
+	maploader->unloadMap();
+	delete deck;
+	delete maploader;
+
+	observers.clear();
+
+	actionsOfPLayer = NULL;
+	delete actionsOfPLayer;
+
+	viewObserver = NULL;
+	delete viewObserver;
+	
+
+	cout << " Done!" << endl;
+}
+
 int Game::nbOfCoin(int nbOfPlayer) {
 	switch(nbOfPlayer){
 	case 2: return 14;
@@ -397,31 +430,6 @@ void Game::playerChooseAction(Player* playerTurn,vector<string>* actions) {
 
 }
 
-void Game::destroyGame()
-{
-	cout << " Currently deleting all instances of the game !" << endl;
-	for (int i = 0; i < allPlayers.size(); i++) {
-		delete allPlayers.at(i)->getCoins();
-		delete allPlayers.at(i)->getId();
-		delete allPlayers.at(i)->getUserStrat();
-		delete allPlayers.at(i)->getBiddingInstance();
-		delete allPlayers.at(i)->getHand();
-		delete allPlayers.at(i);
-
-	}
-	maploader->unloadMap();
-	delete deck;
-	delete maploader;
-	observers.clear();
-	actionsOfPLayer = NULL;
-	delete actionsOfPLayer;
-	delete viewObserver;
-	deck->eraseDeck();
-
-
-
-	cout << " Done!" << endl;
-}
 
 void Game::startGame() {
 

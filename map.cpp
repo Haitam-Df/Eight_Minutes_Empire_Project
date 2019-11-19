@@ -13,7 +13,7 @@ Continent::Continent(string name) {
 	unordered_map<string, Country*> subCountry;
 }
 Continent::~Continent() {
-
+	subCountry.clear();
 }
 // add country to the continent object only if the country is not already added
 void Continent::addSubCountry(string name,Country* country) {
@@ -224,6 +224,9 @@ Country::Country(string name,View* observer) {
 }
 Country::~Country() { 
 
+	armies.clear();
+	cities.clear();
+	
 }
 // add country to the edge of the Country object if this country is not already an edge country
 void Country:: addEdgeCountry(string name,Country* country) {
@@ -349,6 +352,7 @@ Map* Map::getInstance()
 void Map::releaseInstance()
 {
 	if (m_instance != NULL) {
+		
 		delete Map::m_instance;
 		m_instance = NULL;
 	}
@@ -362,6 +366,20 @@ Map::Map() {
 	unordered_map<string, Continent*> allContinent;
 }
 Map::~Map() {
+	
+	for (auto it : allCountry) {
+		it.second->~Country();
+	}
+
+	for (auto it : allContinent) {
+		it.second->~Continent();
+	}
+
+	allContinent.clear();
+	allCountry.clear();
+	
+	
+	
 }
 
 void Map::displayAllCountry() {

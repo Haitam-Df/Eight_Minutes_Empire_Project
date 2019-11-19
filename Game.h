@@ -20,6 +20,7 @@ private:
 
 public:
 	Game();
+	~Game();
 	void loadPlayer();
 	void createDeck();
 	void playerBid();

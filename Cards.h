@@ -21,6 +21,7 @@ private:
 	vector<Cards*> hand;
 public:
 	Deck();
+	~Deck();
 	void draw();
 	void eraseDeck();
 	void removeCard(int position);

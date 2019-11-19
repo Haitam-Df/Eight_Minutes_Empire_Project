@@ -18,5 +18,5 @@ int main() {
 	game->setMap(mapLoader->getMap());
 	game->loadPlayer();
 	game->setObserver();
-	
+
 }*/

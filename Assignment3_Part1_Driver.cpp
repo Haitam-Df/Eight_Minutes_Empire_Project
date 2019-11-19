@@ -39,6 +39,6 @@ int main() {
 
 	game->startGame();
 	game->displayCountry();
-	game->computeScoreG();
-	game->destroyGame();
+	//game->computeScoreG();
+	delete game;
 }
