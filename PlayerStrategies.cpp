@@ -85,7 +85,7 @@ bool PlayerStrategies::changeStrat() {
 
 					while (true) {
 						cin >> changeStrat;
-						if (changeStrat == 1) {
+						if (changeStrat == 1) {	
 							setStrategy(changeStrat - 1);
 							return false;
 							break;

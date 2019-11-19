@@ -11,8 +11,8 @@ class Bidding {
 public:
 	Bidding();
 	Bidding(int year, int totalcoin);
-	void runOnce(bool& CPU);
-	void bid(bool& CPU);
+	void runOnce(bool CPU);
+	void bid(bool CPU);
 	int getBidding();
 	int getRun();
 	int getAge();

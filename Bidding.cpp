@@ -30,7 +30,7 @@ int Bidding::getAge()
 }
 
 // you can only bid one time
-void Bidding::runOnce(bool& CPU)
+void Bidding::runOnce(bool CPU)
 {
 	if (OnlyOnce == 0) {
 		bid(CPU);
@@ -43,7 +43,7 @@ void Bidding::runOnce(bool& CPU)
 }
 
 // give the player access to one bidding
-void Bidding::bid(bool& CPU)
+void Bidding::bid(bool CPU)
 {
 	int selectedCoin;
 	while (true) {

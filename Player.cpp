@@ -24,7 +24,7 @@ Player::Player(int year, Deck* deck, int money, int Id, bool CPU, int strat)
 	hand = new Hand(deck);
 	coins = new int(money);
 	id = new int(Id);
-	isCPU = new bool(CPU);
+	isCPU = CPU;
 	userStrategy = new PlayerStrategies(strat);
 }
 Bidding* Player::getBiddingInstance() {
@@ -36,7 +36,7 @@ PlayerStrategies* Player::getUserStrat() {
 
 void Player::setStatus(bool change)
 {
-	isCPU = new bool(change);
+	isCPU = change;
 }
 
 void Player::setColor(string color) {
