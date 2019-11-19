@@ -17,7 +17,7 @@ private:
 	Bidding* bidding;
 	Hand* hand;
 	string colorArmy;
-	bool* isCPU;
+	bool isCPU;
 	PlayerStrategies* userStrategy;
 	unordered_map<string, Country*> ownCountry;
 	vector<Country*> armiesInBoard;
@@ -47,7 +47,7 @@ public:
 	void addCity(Country* country);
 	void DestroyArmy(Country* country);
 	int* getId();
-	bool* getStatus();
+	bool getStatus();
 	void displayInfo();
 
 

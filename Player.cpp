@@ -36,7 +36,6 @@ PlayerStrategies* Player::getUserStrat() {
 
 void Player::setStatus(bool change)
 {
-	delete isCPU;
 	isCPU = new bool(change);
 }
 
@@ -51,7 +50,7 @@ string Player::getColor() {
 int* Player::getId() {
 	return id;
 }
-bool* Player::getStatus() {
+bool Player::getStatus() {
 	return isCPU;
 }
 
@@ -469,7 +468,7 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 		// user has cities however, he can decide to iadd new armies to the starting point if he prefers
 		else {
 			cout << " You do have  cities ,However would you like to add armies to the starting point (y/n)" << endl;
-			if (*this->getStatus()) {
+			if (this->getStatus()) {
 				answer = "y";
 				cout << answer;
 			}
@@ -479,7 +478,7 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 			if (answer == "y") {
 				while (!(nb <= armies && nb >= 1)) {
 					cout << "how many armies do you want between 1 and " << armies << endl;
-					if (*this->getStatus()) {
+					if (this->getStatus()) {
 						nb = armies;
 					}
 					else { cin >> nb; }
@@ -659,7 +658,7 @@ void Player::buildCity(string action, Country* startingPoint)
 	while (!existantCountry)
 	{
 		cout << " Where do you want to add a city ( choose a country) " << endl;
-		if (*this->getStatus()) {newCity = armiesInBoard.at(0)->getCountryName();}
+		if (this->getStatus()) {newCity = armiesInBoard.at(0)->getCountryName();}
 		else {
 			getline(cin, newCity);
 			getline(cin, newCity);
@@ -727,7 +726,7 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers)
 	}
 	// user input on which army the player wishes to destroy 
 	cout << "from which player do you which to delete an army " << endl;
-	if (*this->getStatus()) {
+	if (this->getStatus()) {
 		playerId = random;
 		cout << playerId << endl;;
 	}else{ cin >> playerId; }
@@ -741,7 +740,7 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers)
 	while (!existantCountry)
 	{
 		cout << "which army do you wish to delete " << endl;
-		if (*this->getStatus()) {
+		if (this->getStatus()) {
 			armyName = allPlayers.at(playerId - 1)->armiesInBoard.at(0)->getCountryName();
 			cout << armyName<<endl;
 		}
@@ -789,7 +788,7 @@ bool Player::Ignore(vector<string>* actions) {
 	while (!decision) {
 
 
-		if (*this->getStatus()) {
+		if (this->getStatus()) {
 			choice = this->getUserStrat()->getAction();
 			
 		}
@@ -864,7 +863,7 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 				cout << endl;
 				cout << "Do you want to Destroy or Build ? (Destroy/Build)" << endl;
 
-				if (*this->getStatus()) {
+				if (this->getStatus()) {
 					choice = "destroy";
 					cout << choice << endl;
 				}
@@ -894,7 +893,7 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 				cout << endl;
 				cout << "Do you want to Add or Move ? (Add/Move)" << endl;
 
-				if (*this->getStatus()) {
+				if (this->getStatus()) {
 					choice = "add";
 					cout << choice << endl;
 				}

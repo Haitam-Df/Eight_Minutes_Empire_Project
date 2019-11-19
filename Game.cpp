@@ -104,8 +104,8 @@ void Game::playerBid() {
 		cout << endl;
 		cout << "For Player " << (i + 1) << endl;
 		// Player Bid
-		bool* temp = allPlayers[i]->getStatus();
-		allPlayers[i]->getBiddingInstance()->runOnce(*temp);
+		bool temp = allPlayers[i]->getStatus();
+		allPlayers[i]->getBiddingInstance()->runOnce(temp);
 
 		//Those if is not check which Player bid the most
 		if (allPlayers[i]->getBiddingInstance()->getBidding() > mostBidding) {
@@ -321,12 +321,12 @@ void Game::playerChooseAction(Player* playerTurn,vector<string>* actions) {
 
 		if (!playerTurn->getUserStrat()->getChangeStrat()) {
 
-			if (*playerTurn->getStatus() == false && playerTurn->getUserStrat()->changeStrat() == true) {
+			if (playerTurn->getStatus() == false && playerTurn->getUserStrat()->changeStrat() == true) {
 				if (!playerTurn->getUserStrat()->getChangeStrat())
 				playerTurn->setStatus(true);
 
 			}
-			else if (*playerTurn->getStatus() == true && playerTurn->getUserStrat()->changeStrat() == false) {
+			else if (playerTurn->getStatus() == true && playerTurn->getUserStrat()->changeStrat() == false) {
 				if (!playerTurn->getUserStrat()->getChangeStrat())
 				playerTurn->setStatus(false);
 
@@ -402,7 +402,6 @@ void Game::destroyGame()
 	cout << " Currently deleting all instances of the game !" << endl;
 	for (int i = 0; i < allPlayers.size(); i++) {
 		delete allPlayers.at(i)->getCoins();
-		delete allPlayers.at(i)->getStatus();
 		delete allPlayers.at(i)->getId();
 		delete allPlayers.at(i)->getUserStrat();
 		delete allPlayers.at(i)->getBiddingInstance();
