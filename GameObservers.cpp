@@ -8,6 +8,8 @@ void Phase::notify(int playerNb, vector<string>* actionsOfPLayer) {
 }
 
 void Phase::display() {
+	
+
 	cout << endl;
 	cout << endl;
 	cout << "******* USING HAKI OF OBSERVATION, THIS IS WHAT HAPPENNED SO FAR IN THIS TURN **************";
@@ -19,6 +21,11 @@ void Phase::display() {
 			cout << element.second[x] << endl;
 		}
 	}
+	//array for each player how many cities they have
+	//int citiesInBoard[3];
+
+	
+	
 
 	cout << "******* TOO MUCH HAKI WAS USE , LETS REST A LITTLE BIT **************";
 
@@ -38,18 +45,90 @@ void View::notify(string country, string colorPlayer) {
 
 
 void View::displayCountryStats() {
+	
+	int counters[5] = {0,0,0,0,0};
+	int total=allCountries.size();
 	cout << endl;
 	cout << "******** LETS TAKE A LOOK OF WHICH COUNTRY IS OWNED BY WHO!!"<<endl;
 	for (std::pair<string, string> element : allCountryStats) {
-		cout << " 	- "<<element.first<<"  OWNED BY : "<<element.second << endl;
+		cout << " 	- "<<element.first<<"  OWNED BY : "<<element.second << endl;			
+		if (element.second == "red")
+		{
+			counters[0]++;
+		}
+		else if (element.second == "blue")
+		{
+			counters[1]++;
+		}
+		else if (element.second == "yellow")
+		{
+			counters[2]++;
+		}
+		else if (element.second == "green")
+		{
+			counters[3]++;
+		}
+		else if (element.second == "white")
+		{
+			counters[4]++;
+		}
+		
+	}
+	for (int i = 0; i < allplayers.size(); i++)
+	{
+		cout << "Player " << allplayers[i]->getColor() << " has the following flow chart ";
+		for (int j = 0; j < counters[i]; j++)
+		{
+			cout << "+";
+		}
+		for (int j = 0; j < total; j++)
+		{
+			cout << "-";
+		}
+		cout << endl;
 	}
 }
 
 void View::displayContinentStats() {
+	int counters[5] = { 0,0,0,0,0 };
+	int total = allContinent.size();
 	cout << endl;
 	cout << "******** LETS TAKE A LOOK OF WHICH CONTINENT IS OWNED BY WHO!!" << endl;
 	for (std::pair<string, string> element : allContinentStats) {
 		cout << " 	- " << element.first << "  OWNED BY : " << element.second << endl;
+		if (element.second == "red")
+		{
+			counters[0]++;
+		}
+		else if (element.second == "blue")
+		{
+			counters[1]++;
+		}
+		else if (element.second == "yellow")
+		{
+			counters[2]++;
+		}
+		else if (element.second == "green")
+		{
+			counters[3]++;
+		}
+		else if (element.second == "white")
+		{
+			counters[4]++;
+		}
+	}
+	for (int i = 0; i < allplayers.size(); i++)
+	{
+		cout << "Player " << allplayers[i]->getColor() << " has the following flow chart ";
+		for (int j = 0; j < counters[i]; j++)
+		{
+			cout << "+";
+		}
+		for (int j = 0; j < total; j++)
+		{
+			cout << "-";
+		}
+		cout << endl;
 	}
 }
 

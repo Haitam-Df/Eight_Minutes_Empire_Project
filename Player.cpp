@@ -54,6 +54,8 @@ bool Player::getStatus() {
 	return isCPU;
 }
 
+
+
 void Player::addOwnCountry(string regionsName, Country* country)
 {
 	ownCountry[regionsName] = country;
@@ -230,6 +232,16 @@ void Player::displayInfo() {
 int* Player::getCoins()
 {
 	return coins;
+}
+
+vector<Country*> Player::getArmiesInBoard()
+{
+	return armiesInBoard;
+}
+
+vector<Country*> Player::getCitiesInBoard()
+{
+	return citiesInBoard;
 }
 
 void Player::addArmy(Country* country) {
@@ -520,7 +532,6 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 					cin >> nb;
 				}
 
-
 				for (int j = 0; j < nb; j++) {
 					if (armiesInBoard.size() == 14) {
 						cout << " you have 14 armies , you cannot have more" << endl;
@@ -688,7 +699,7 @@ void Player::buildCity(string action, Country* startingPoint)
 }
 
 // This method is used to  destroy armies of another player  ,the string action is the full card string that will be used to extract how many armies can be destroyed by the  player 
-void Player::destroyArmy(string action, vector <Player*> allPlayers)
+void Player::destroyArmy(string action, vector <Player*> allPlayers,vector<string>* actions)
 {
 	string answer;
 	string color = getColor();
@@ -749,6 +760,7 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers)
 			getline(cin, armyName);
 
 		}
+		actions->push_back("- I am celebrating like I was required to , I have destroyed from Player "+ to_string(playerId) + " in the Country: "+ armyName);
 		for (int j = 0; j < armiesInBoard.size(); j++) {
 
 			if (allPlayers.at(playerId - 1)->armiesInBoard.at(j)->getCountryName() == armyName && !existantCountry) {
@@ -875,7 +887,7 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 				cout << endl;
 				if (choice == "Destroy" || choice == "destroy") {
 					actions->push_back("- Chose to Destroy");
-					destroyArmy(actionTook, AllPlayers);
+					destroyArmy(actionTook, AllPlayers, actions);
 					goodSelect = false;
 				}
 				if (choice == "Build" || choice == "build") {
@@ -928,7 +940,7 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 				goodSelect = false;
 			}
 			if (actionTook == "Destroy 1 Army and Add 1 Army") {
-				destroyArmy(actionTook, AllPlayers);
+				destroyArmy(actionTook, AllPlayers, actions);
 				placeNewArmies(actionTook, startingPoint);
 				goodSelect = false;
 			}
