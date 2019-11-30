@@ -14,6 +14,7 @@ private:
 	const vector<string> allColors = { "red", "blue", "yellow", "green", "white" };
 
 	vector<Phase*> observers;
+	int playerMode;
 	vector<string>* actionsOfPLayer;
 	int playerTurn;
 	View* viewObserver;
@@ -28,6 +29,7 @@ public:
 	void showDeckHand();
 	void addSupply(int money);
 	void playerChooseColor(int nbOfPlayer);
+	void setPlayerMode(int playerMode);
 	void if2Players();
 	void setMap(Map* map);
 	void setStartingGameCountry();

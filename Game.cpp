@@ -55,11 +55,30 @@ int Game::nbOfCoin(int nbOfPlayer) {
 }
 
 int Game::nbOfTurn(int nbOfPlayer) {
-	switch (nbOfPlayer) {
-	case 2: return 13;
-	case 3: return 10;
-	case 4: return 8;
-	case 5: return 7;
+	if (playerMode == 1) {
+		switch (nbOfPlayer) {
+		case 2: return 13;
+		case 3: return 10;
+		case 4: return 8;
+		case 5: return 7;
+		}
+	}
+	else {
+		cout << endl;
+		switch (nbOfPlayer) {
+		case 2: 
+			cout << " CURRENTLY IN TOURNAMENT MODE: 2 PLAYER IS SET TO 26 TURNS, THEREFORE 13 COMPLETE TURNS!!" << endl;
+			return 13;
+		case 3: 
+			cout << " CURRENTLY IN TOURNAMENT MODE: 3 PLAYER IS SET TO 30 TURNS, THEREFORE 10 COMPLETE TURNS!!" << endl;
+			return 10;
+		case 4: 
+			cout << " CURRENTLY IN TOURNAMENT MODE: 4 PLAYER IS SET TO 28 TURNS, THEREFORE 7 COMPLETE TURNS!!" << endl;
+			return 7;
+		case 5:
+			cout << " CURRENTLY IN TOURNAMENT MODE: 5 PLAYER IS SET TO 30 TURNS, THEREFORE 6 COMPLETE TURNS!!" << endl;
+			return 6;
+		}
 	}
 }
 
@@ -332,6 +351,11 @@ void Game::playerChooseColor(int nbOfPlayer) {
 			}
 		}
 	}
+}
+
+void Game::setPlayerMode(int playerModeInput)
+{
+	playerMode = playerModeInput;
 }
 
 

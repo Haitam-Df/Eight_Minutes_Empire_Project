@@ -165,10 +165,37 @@ void View::notifyWinner(int player) {
 	playerWinner = player;
 }
 void View::displayWin() {
+
 	cout << endl;
+	cout << "___________________________________________________________________________" << endl;
+	cout << "|  Payer #  |  Cards  |  Victory  Points  |  Coins  |   Color  |" << endl;
+	
 	for (pair<int, int> element : playerPoint) {
-		cout << "PLAYER "<<element.first << " has "<<element.second << "POINTS! "<<endl;
+		for (Player* elementplayer : allplayers) {
+			if (*elementplayer->getId() == element.first) {
+				cout << "|_____" << element.first << "_____|____" << elementplayer->getHand()->getHand().size() << "____|_________"<<element.second<<"_________|____"<<*elementplayer->getCoins()<<"____|_____"<< elementplayer->getColor()<< endl;
+			}
+		}
 	}
-	cout << endl;
-	cout << "THE WINNNER ISSSS ...... PLAYER " << playerWinner << " WITH " << playerPoint[playerWinner];
+	int valueWin = 0;
+	int playerint = 0;
+	int isWin = 1;
+	for (pair<int, int> element : playerPoint) {
+		if (element.second > valueWin) {
+			valueWin = element.second;
+			playerint = element.first;
+			isWin = 1;
+		}
+		else if(element.second == valueWin){
+			isWin = 0;
+		}
+	}
+	if (isWin == 1) {
+		cout << endl;
+		cout << "THE WINNNER ISSSS ...... PLAYER " << playerint << " WITH " << valueWin << " POINTS" << endl;
+	}
+	else {
+		cout << endl;
+		cout << "THERE IS NO WINNER, THE RESULT IS DRAW!!!" << endl;
+	}
 }
