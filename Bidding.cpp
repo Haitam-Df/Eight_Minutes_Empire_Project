@@ -49,8 +49,17 @@ void Bidding::bid(bool CPU)
 	while (true) {
 		cout << endl;
 		if (!CPU) {
-			cout << "how many coins do you want to bid ?" << endl;
-			cin >> selectedCoin;
+			while (true) {
+				cout << "how many coins do you want to bid ?" << endl;
+				cin >> selectedCoin;
+				if (cin.fail()) {
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+				else {
+					break;
+				}
+			}
 		}
 		else {
 			selectedCoin = rand() % 10;

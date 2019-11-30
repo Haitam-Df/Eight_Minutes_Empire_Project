@@ -92,15 +92,28 @@ void Game::loadPlayer() {
 		cout << endl;
 		cout << "How many players are playing (2 to 5)? " << endl;
 		cin >> nbPlayer;
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
 		if (nbPlayer > 1 && nbPlayer < 6)
 			break;
 	}
 
 	while (true) {
-		cout << endl;
-		cout << endl;
-		cout << "How many of the players are CPU (0 to " << nbPlayer << ")?" << endl;
-		cin >> nbCPU;
+		while (true) {
+			cout << endl;
+			cout << endl;
+			cout << "How many of the players are CPU (0 to " << nbPlayer << ")?" << endl;
+			cin >> nbCPU;
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+			else {
+				break;
+			}
+		}
 		if (nbCPU > -1 && nbCPU <= nbPlayer)
 			break;
 	}
@@ -110,25 +123,40 @@ void Game::loadPlayer() {
 	// GET PLAYER AGE
 
 	for (int x = 0; x < nbPlayer; x++) {
-		cout << endl;
-		cout << endl;
-		cout << "How old is the " << (x + 1) << " Player?" << endl;
 		int age;
-		cin >> age;
+		while (true) {
+			cout << endl;
+			cout << endl;
+			cout << "How old is the " << (x + 1) << " Player?" << endl;
+			
+			cin >> age;
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+			else {
+				break;
+			}
+		}
 		allPlayers.push_back(new Player(age, deck, nbOfCoin(totalPlayers), (x + 1), false, 0));
 	}
 
 	int ageCPU;
 	for (int x = 0; x < nbCPU; x++) {
 		ageCPU = rand() % 12 + 1;
+		int strat = -1;
+		while (true) {
 		cout << endl;
 		cout << endl;
 		cout << "Which strategy are you using for the " << (x + 1) << " CPU" << endl;
-		int strat = -1;
 		cout << "1) Greedy ( loves to build and destroy)" << endl;
 		cout << "2) Moderate ( loves to add to countries he owns)" << endl;
-		while (true) {
+		
 			cin >> strat;
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
 			if (strat > 0 && strat < 3) {
 				break;
 			}
