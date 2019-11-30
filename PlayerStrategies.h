@@ -3,10 +3,10 @@
 
 #include<iostream>
 #include "Cards.h"
-
+#include "abstractPlayerStrategy.h"
 using namespace std;
 
-class PlayerStrategies
+class PlayerStrategies : public abstractPlayerStrategy
 {
 
 public:

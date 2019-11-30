@@ -3,12 +3,13 @@
 #include <string>
 #include "Player.h"
 #include "map.h"
+#include "abstractGameObserver.h"
 
 using namespace std;
 class Continent;
 class Country;
 class Player;
-class Phase {
+class Phase : public abstractGameObserver {
 private :
 	unordered_map<int, vector<string>> actionsPlayerTook;
 
@@ -19,7 +20,7 @@ public:
 	void reset();
 };
 
-class View {
+class View : public abstractview {
 private:
 	vector<Player*> allplayers;
 	unordered_map<string,string> allCountryStats;

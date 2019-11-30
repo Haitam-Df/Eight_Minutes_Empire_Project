@@ -36,7 +36,7 @@ public:
 	void moveArmies(string action, Country* startingPoint);
 	//	void moveOverLand(string action);
 	void buildCity(string action, Country* startingPoint);
-	void destroyArmy(string action, vector<Player*> allPlayers);
+	void destroyArmy(string action, vector<Player*> allPlayers, vector<string>* actions);
 	bool Ignore(vector<string>* actions);
 	string AndOrAction(string action, int part);
 	void makeAction(string actionTook, Country* startingPoint, vector<Player*> AllPlayers,vector<string>* actions);
@@ -58,6 +58,8 @@ public:
 	Hand* getHand();
 	string getColor();
 	int* getCoins();
+	vector<Country*> getArmiesInBoard();
+	vector<Country*> getCitiesInBoard();
 	Bidding* getBiddingInstance();
 	PlayerStrategies* getUserStrat();
 	void setStatus(bool change);
