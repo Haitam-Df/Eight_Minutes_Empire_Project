@@ -1,23 +1,12 @@
 
 #include "stdafx.h"
-#include "Cards.h" 
+#include "Cardsfactory.h" 
 #include<iostream>
 #include <time.h>
 #include <cstdlib>
-#include < algorithm >
+#include <algorithm>
 
-Cards::Cards(string newAction, string newGood) {
-	good = newGood;
-	action = newAction;
-}
 
-Cards::~Cards()
-{
-	this->good.clear();
-	this->action.clear();
-
-	
-}
 
 // deck class that will initiate the 42 cards from the game
 Deck::Deck() {
@@ -25,55 +14,56 @@ Deck::Deck() {
 	int random, random2;
 	srand(time(NULL));
 
-	Cards* c1 = new Cards("Add 2 Armies or Move 3 Armies", "Forest"); // special case.
-	Cards* c2 = new Cards("Destroy 1 Army or Build city", "Forest");
-	Cards* c3 = new Cards("Add 3 Armies", "Forest");
-	Cards* c4 = new Cards("Move 6 Armies", "Forest");
-	Cards* c5 = new Cards("Move 3 Armies via Ship (move over land and/or water)", "Forest");
-	Cards* c6 = new Cards("Move 4 Armies via Ship (move over land and/or water)", "Forest");
-	Cards* c7 = new Cards("Build City", "Forest");
-	Cards* c41 = new Cards("Move 3 Armies", "Forest");
+	
+	Cards* c1 = Cardsfactory::create("Add 2 Armies or Move 3 Armies", "Forest"); // special case.
+	Cards* c2 = Cardsfactory::create("Destroy 1 Army or Build city", "Forest");
+	Cards* c3 = Cardsfactory::create("Add 3 Armies", "Forest");
+	Cards* c4 = Cardsfactory::create("Move 6 Armies", "Forest");
+	Cards* c5 = Cardsfactory::create("Move 3 Armies via Ship (move over land and/or water)", "Forest");
+	Cards* c6 = Cardsfactory::create("Move 4 Armies via Ship (move over land and/or water)", "Forest");
+	Cards* c7 = Cardsfactory::create("Build City", "Forest");
+	Cards* c41 = Cardsfactory::create("Move 3 Armies", "Forest");
 
 
-	Cards* c8 = new Cards("Build City", "Carrot");
-	Cards* c9 = new Cards("Destroy 1 Army and Add 1 Army", "Carrot");
-	Cards* c10 = new Cards("Add 3 Armies", "Carrot");
-	Cards* c11 = new Cards("Move 4 Armies", "Carrot");
-	Cards* c12 = new Cards("Move 5 Armies", "Carrot");
-	Cards* c13 = new Cards("Add 3 Armies", "Carrot");
-	Cards* c14 = new Cards("Move 3 Armies via Ship (move over land and/or water)", "Carrot");
-	Cards* c15 = new Cards("Add 4 Armies or Move 2 Armies", "Carrot"); // special case
-	Cards* c16 = new Cards("Move 4 Armies", "Carrot");
-	Cards* c18 = new Cards("Build City", "Carrot");
+	Cards* c8 = Cardsfactory::create("Build City", "Carrot");
+	Cards* c9 = Cardsfactory::create("Destroy 1 Army and Add 1 Army", "Carrot");
+	Cards* c10 = Cardsfactory::create("Add 3 Armies", "Carrot");
+	Cards* c11 = Cardsfactory::create("Move 4 Armies", "Carrot");
+	Cards* c12 = Cardsfactory::create("Move 5 Armies", "Carrot");
+	Cards* c13 = Cardsfactory::create("Add 3 Armies", "Carrot");
+	Cards* c14 = Cardsfactory::create("Move 3 Armies via Ship (move over land and/or water)", "Carrot");
+	Cards* c15 = Cardsfactory::create("Add 4 Armies or Move 2 Armies", "Carrot"); // special case
+	Cards* c16 = Cardsfactory::create("Move 4 Armies", "Carrot");
+	Cards* c18 = Cardsfactory::create("Build City", "Carrot");
 
-	Cards* c19 = new Cards("Move 4 Armies", "Anvil");
-	Cards* c21 = new Cards("Add 3 Armies or Move 4 Armies", "Anvil"); // special case
-	Cards* c22 = new Cards("Move 5 Armies", "Anvil");
-	Cards* c23 = new Cards("Add 3 Armies", "Anvil");
-	Cards* c24 = new Cards("Add 3 Armies", "Anvil");
+	Cards* c19 = Cardsfactory::create("Move 4 Armies", "Anvil");
+	Cards* c21 = Cardsfactory::create("Add 3 Armies or Move 4 Armies", "Anvil"); // special case
+	Cards* c22 = Cardsfactory::create("Move 5 Armies", "Anvil");
+	Cards* c23 = Cardsfactory::create("Add 3 Armies", "Anvil");
+	Cards* c24 = Cardsfactory::create("Add 3 Armies", "Anvil");
 
-	Cards* c25 = new Cards("Move 3 Armies via Ship (move over land and/or water)", "Anvil");
-	Cards* c20 = new Cards("Build City", "Anvil");
-	Cards* c17 = new Cards("Move 4 Armies", "Anvil");
-	Cards* c42 = new Cards("Add 3 Armies or Move 3 Armies", "Anvil"); // special case
+	Cards* c25 = Cardsfactory::create("Move 3 Armies via Ship (move over land and/or water)", "Anvil");
+	Cards* c20 = Cardsfactory::create("Build City", "Anvil");
+	Cards* c17 = Cardsfactory::create("Move 4 Armies", "Anvil");
+	Cards* c42 = Cardsfactory::create("Add 3 Armies or Move 3 Armies", "Anvil"); // special case
 
-	Cards* c26 = new Cards("Move 2 Armies", "Ore");
-	Cards* c27 = new Cards("Move 3 Armies via Ship (move over land and/or water)", "Ore");
-	Cards* c28 = new Cards("Move 2 Armies via Ship (move over land and/or water)", "Ore");
-	Cards* c29 = new Cards("Move 2 Armies via Ship (move over land and/or water)", "Ore");
-	Cards* c30 = new Cards("Add 3 Armies", "Ore");
-	Cards* c31 = new Cards("Add 3 Armies", "Ore");
-	Cards* c32 = new Cards("Add 2 Armies", "Ore");
+	Cards* c26 = Cardsfactory::create("Move 2 Armies", "Ore");
+	Cards* c27 = Cardsfactory::create("Move 3 Armies via Ship (move over land and/or water)", "Ore");
+	Cards* c28 = Cardsfactory::create("Move 2 Armies via Ship (move over land and/or water)", "Ore");
+	Cards* c29 = Cardsfactory::create("Move 2 Armies via Ship (move over land and/or water)", "Ore");
+	Cards* c30 = Cardsfactory::create("Add 3 Armies", "Ore");
+	Cards* c31 = Cardsfactory::create("Add 3 Armies", "Ore");
+	Cards* c32 = Cardsfactory::create("Add 2 Armies", "Ore");
 
-	Cards* c33 = new Cards("Add 2 Armies", "Crystal");
-	Cards* c34 = new Cards("Add 2 Armies", "Crystal");
-	Cards* c35 = new Cards("Move 2 Armies", "Crystal");
-	Cards* c36 = new Cards("Add 1 Army", "Crystal");
-	Cards* c37 = new Cards("Add 2 Armies", "Crystal");
+	Cards* c33 = Cardsfactory::create("Add 2 Armies", "Crystal");
+	Cards* c34 = Cardsfactory::create("Add 2 Armies", "Crystal");
+	Cards* c35 = Cardsfactory::create("Move 2 Armies", "Crystal");
+	Cards* c36 = Cardsfactory::create("Add 1 Army", "Crystal");
+	Cards* c37 = Cardsfactory::create("Add 2 Armies", "Crystal");
 
-	Cards* c38 = new Cards("Move 2 Armies", "Wild");
-	Cards* c39 = new Cards("Move 2 Armies", "Wild");
-	Cards* c40 = new Cards("Add 2 Armies", "Wild");
+	Cards* c38 = Cardsfactory::create("Move 2 Armies", "Wild");
+	Cards* c39 = Cardsfactory::create("Move 2 Armies", "Wild");
+	Cards* c40 = Cardsfactory::create("Add 2 Armies", "Wild");
 
 
 	deckOfCard.push_back(c1);
@@ -121,6 +111,7 @@ Deck::Deck() {
 
 	cout << endl;
 	cout << " The Deck is created!!" << endl;
+
 	for (int i = 0; i < 42; i++)
 	{
 		random = rand() % 40 + 1;

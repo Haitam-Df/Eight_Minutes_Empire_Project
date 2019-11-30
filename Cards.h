@@ -6,12 +6,11 @@ using namespace std;
 
 class Cards {
 public:
-	Cards(string action, string good);
-	~Cards();
+	virtual void applyAction(string newAction) =0;
+	virtual void applyGood()=0;
+	virtual ~Cards() {};
 	string good;
 	string action;
-
-private:
 
 };
 
