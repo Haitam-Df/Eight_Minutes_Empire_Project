@@ -112,7 +112,20 @@ bool PlayerStrategies::changeStrat() {
 int PlayerStrategies::HumanPlayer(vector<Cards*> gameHand)
 {
 	int  action;
-	cin >> action;
+	while (true) {
+		cout << endl;
+		cout << "Select an option" << endl;
+		cin >> action;
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+		else {
+			if (action > 0 && action <= gameHand.size()) {
+				break;
+			}
+		}
+	}
 
 	return action;
 }

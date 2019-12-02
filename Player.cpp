@@ -278,19 +278,29 @@ void Player::moveArmies(string action, Country* startingPoint) {
 	stringstream ss(action);
 	ss >> tmp >> move;
 
+	while (true) {
+		cout << endl;
+		cout << "You have an army in these countries :" << endl;
+		for (int i = 0; i < armiesInBoard.size(); i++) {
 
-	cout << "You have an army in these countries :" << endl;
-	for (int i = 0; i < armiesInBoard.size(); i++) {
+			// we get the name of each country that the player has an army in
+			cout << (i + 1) << ")" << armiesInBoard.at(i)->getCountryName() << endl;
+		}
+		cout << endl;
 
-		// we get the name of each country that the player has an army in
-		cout <<(i+1)<<")"<< armiesInBoard.at(i)->getCountryName() << endl;
+		cout << "Please select the starting country to move an army (write the number)" << endl;
+		cin >> answer;
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+		else {
+			if (answer > 0 && answer < (armiesInBoard.size()+1)) {
+				break;
+			}
+		}
+
 	}
-	cout << endl;
-
-	cout << "Please select the starting country to move an army (write the number)" << endl;
-	cin >> answer;
-
-
 	start = armiesInBoard.at(answer-1)->getCountryName();   // we want to keep the first country in a string because we are going to delete the army from there and move it to the new location
 	debut = answer - 1;   // we also keep the location of the starting point to remove it after
 
@@ -310,12 +320,23 @@ void Player::moveArmies(string action, Country* startingPoint) {
 
 	do {
 		if ((move - 1) == 0) {   // if you only have one move , we will force you to  select a Country to move to
-			cout << "you have to pick a country to move the army because you have no more move left" << endl;
-			userAnswer = "move";
-			cout << endl;
-			cout << endl;
-			cout << "Select a country to move the army (write the number) " << endl;
-			cin >> answer;
+			while (true) {
+				cout << "you have to pick a country to move the army because you have no more move left" << endl;
+				userAnswer = "move";
+				cout << endl;
+				cout << endl;
+				cout << "Select a country to move the army (write the number) " << endl;
+				cin >> answer;
+				if (cin.fail()) {
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+				else {
+					if (answer > 0 && answer < (temp.size()+1)) {
+						break;
+					}
+				}
+			}
 			move -= 1;
 		}
 
@@ -330,10 +351,26 @@ void Player::moveArmies(string action, Country* startingPoint) {
 
 		if (userAnswer == "explore") {
 			move -= 1;
-			cout << "Which Country do you want to explore? (write the number)" << endl;
-			cin >> answer;
-			cout << endl;
-			cout << endl;
+
+			while (true) {
+				cout << endl;
+				cout << "Which Country do you want to explore? (write the number)" << endl;
+				cin >> answer;
+				
+				if (cin.fail()) {
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+				else {
+					if (answer > 0 && answer < (temp.size()+1)) {
+						cout << endl;
+						cout << endl;
+						break;
+					}
+					
+				}
+				
+			}
 			
 			temp = temp.at(currentEdge.at(answer - 1)->getCountryName())->getEdgeCountry();            // we get the new unordered map of edge countries to print it
 
@@ -356,8 +393,19 @@ void Player::moveArmies(string action, Country* startingPoint) {
 		else if (userAnswer == "move") {
 
 			if (move > 1) {
-				cout << "To which country do you want to move an army  (write the number)?" << endl;
-				cin >> answer;
+				while (true) {
+					cout << "To which country do you want to move an army  (write the number)?" << endl;
+					cin >> answer;
+					if (cin.fail()) {
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					}
+					else {
+						if (answer > 0 && answer < (temp.size()+1)) {
+							break;
+						}
+					}
+				}
 				move -= 1;
 			}
 
@@ -382,9 +430,23 @@ void Player::moveArmies(string action, Country* startingPoint) {
 
 					cout <<(i+1)<<") "<<armiesInBoard.at(i)->getCountryName() << endl;
 				}
+				while (true) {
+					cout << endl;
+					cout << "Please select the starting country to move an army  (write the number)" << endl;
+					cin >> answer;
+					if (cin.fail()) {
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					}
+					else {
+						if (answer > 0 && answer < (armiesInBoard.size() + 1)) {
+							cout << endl;
+							cout << endl;
 
-				cout << "Please select the starting country to move an army  (write the number)" << endl;
-				cin >> answer;
+							break;
+						}
+					}
+				}
 				cout << endl;
 				cout << endl;
 
@@ -489,11 +551,25 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 			}
 			if (answer == "y") {
 				while (!(nb <= armies && nb >= 1)) {
-					cout << "how many armies do you want between 1 and " << armies << endl;
-					if (this->getStatus()) {
-						nb = armies;
+					while (true) {
+						cout << "how many armies do you want between 1 and " << armies << endl;
+						if (this->getStatus()) {
+							nb = armies;
+							break;
+						}
+						else { 
+							cin >> nb;
+							if (cin.fail()) {
+								cin.clear();
+								cin.ignore(numeric_limits<streamsize>::max(), '\n');
+							}
+							else {
+								if (nb > 0 && nb <= armies) {
+									break;
+								}
+							}
+						}
 					}
-					else { cin >> nb; }
 				}
 				for (int i = 0; i < nb; i++) {
 					// each time that we add an army , we verify that we dont exceed 14
@@ -522,14 +598,30 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 				break;
 			}
 			citiesInBoard.at(i)->displayInfo();
-			cout << "Do you want to add an army ( " << armies << " lefts) , y or n ?" << endl;
-			cin >> answer;
+			while (true) {
+				cout << endl;
+				cout << "Do you want to add an army ( " << armies << " lefts) , y or n ?" << endl;
+				cin >> answer;
+				if (answer == "y" || answer == "n") {
+					break;
+				}
+			}
 
 			if (answer == "y") {
 
 				while (!(nb <= armies && nb >= 1)) {
-					cout << "how many armies do you want between 1 and " << armies << endl;
-					cin >> nb;
+					while (true) {
+						cout << "how many armies do you want between 1 and " << armies << endl;
+						cin >> nb;
+						if (cin.fail()) {
+							cin.clear();
+							cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						}else{
+							if (nb > 0 && nb <= armies) {
+								break;
+							}
+						}
+					}
 				}
 
 				for (int j = 0; j < nb; j++) {
@@ -736,11 +828,28 @@ void Player::destroyArmy(string action, vector <Player*> allPlayers,vector<strin
 		random = rand() % (allPlayers.size())+1;
 	}
 	// user input on which army the player wishes to destroy 
-	cout << "from which player do you which to delete an army " << endl;
-	if (this->getStatus()) {
-		playerId = random;
-		cout << playerId << endl;;
-	}else{ cin >> playerId; }
+	while (true) {
+		cout << endl;
+		cout << "from which player do you which to delete an army " << endl;
+		if (this->getStatus()) {
+			playerId = random;
+			cout << playerId << endl;
+			break;
+		}
+		else {
+			cin >> playerId;
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+			else {
+				if (playerId > 0 && playerId <= allPlayers.size()) {
+					break;
+				}
+			}
+
+		}
+	}
 	
 	temp = allPlayers.at(playerId - 1)->armiesInBoard;
 
@@ -872,15 +981,21 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 
 			// ----------------------SPECIAL CASE-------------------------
 			if (actionTook == "Destroy 1 Army or Build city") {
-				cout << endl;
-				cout << "Do you want to Destroy or Build ? (Destroy/Build)" << endl;
+				while (true) {
+					cout << endl;
+					cout << "Do you want to Destroy or Build ? (Destroy/Build)" << endl;
 
-				if (this->getStatus()) {
-					choice = "destroy";
-					cout << choice << endl;
-				}
-				else {
-					cin >> choice;
+					if (this->getStatus()) {
+						choice = "destroy";
+						cout << choice << endl;
+						break;
+					}
+					else {
+						cin >> choice;
+						if (choice == "Destroy" || choice == "destroy" || choice == "Build" || choice == "build") {
+							break;
+						}
+					}
 				}
 
 				cout << endl;
@@ -902,15 +1017,21 @@ void Player::makeAction(string actionTook, Country* startingPoint , vector<Playe
 			}
 
 			if (actionTook == "Add 2 Armies or Move 3 Armies" || actionTook == "Add 4 Armies or Move 2 Armies" || actionTook == "Add 3 Armies or Move 4 Armies" || actionTook == "Add 3 Armies or Move 3 Armies") {
-				cout << endl;
-				cout << "Do you want to Add or Move ? (Add/Move)" << endl;
+				while (true) {
+					cout << endl;
+					cout << "Do you want to Add or Move ? (Add/Move)" << endl;
 
-				if (this->getStatus()) {
-					choice = "add";
-					cout << choice << endl;
-				}
-				else {
-					cin >> choice;
+					if (this->getStatus()) {
+						choice = "add";
+						cout << choice << endl;
+						break;
+					}
+					else {
+						cin >> choice;
+						if (choice == "add" || choice == "Add" || choice == "Move" || choice == "move") {
+							break;
+						}
+					}
 				}
 				cout << endl;
 				cout << endl;
