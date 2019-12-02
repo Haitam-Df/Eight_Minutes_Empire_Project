@@ -547,7 +547,15 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 				cout << answer;
 			}
 			else {
-				cin >> answer;
+				while (true) {
+					cin >> answer;
+
+					if (answer == "y" || answer == "n") { break; }
+					else {
+						cout << " Please write y or n to continue "<<endl;
+					}
+				
+				}
 			}
 			if (answer == "y") {
 				while (!(nb <= armies && nb >= 1)) {
@@ -629,8 +637,8 @@ void Player::placeNewArmies(string action, Country* startingPoint)
 						cout << " you have 14 armies , you cannot have more" << endl;
 						return;
 					}
-					addArmy(citiesInBoard.at(j));
-					citiesInBoard.at(j)->addArmies(color, nb);
+					addArmy(citiesInBoard.at(i));
+					citiesInBoard.at(i)->addArmies(color, nb);
 					armies = armies - 1;
 				}
 
